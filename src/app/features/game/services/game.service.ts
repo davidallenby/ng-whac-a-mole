@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { GameSettings, MoleType } from '../game.interfaces'
+import { GameSettings } from '../game.interfaces'
 import { GAME } from '../game.constants'
 import { CommonService } from '@shared/services/common.service'
 

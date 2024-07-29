@@ -8,9 +8,8 @@ export const routes: Routes = [
   },
   {
     path: 'leaderboard',
-    loadChildren: () => import('@features/game/game.module').then((m) => {
-      return m.GameModule;;
-    })
+    loadComponent: () => import('@features/leaderboard/leaderboard.component')
+    .then((m) => m.LeaderboardComponent)
   },
   {
     path: 'game',

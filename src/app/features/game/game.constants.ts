@@ -32,17 +32,16 @@ export namespace GAME {
   // -- 5% chance of getting super mole (+1 point when clicked)
   // -- 15% chance of getting mega mole (+2 points when clicked)
   // -- 80% chance of getting regular mole (+3 points when clicked)
-
   export const MOLE_TYPES: MoleType[] = [
     {
       moleTypeId: 1,
       moleTypeName: 'Regular mole',
-      moleProbability: 0.85
+      moleProbability: 0.82
     },
     {
       moleTypeId: 2,
       moleTypeName: 'Mega mole',
-      moleProbability: 0.10
+      moleProbability: 0.13
     },
     {
       moleTypeId: 3,
