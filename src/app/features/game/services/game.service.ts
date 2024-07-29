@@ -3,15 +3,19 @@ import { BehaviorSubject, Observable } from 'rxjs'
 import { GameSettings } from '../game.interfaces'
 import { GAME } from '../game.constants'
 import { CommonService } from '@shared/services/common.service'
+import { GameModule } from '../game.module'
+import { Router } from '@angular/router'
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: GameModule
 })
 export class GameService {
   private score: BehaviorSubject<number> = new BehaviorSubject(0)
   private highScore: BehaviorSubject<number> = new BehaviorSubject(0)
 
   private inProgress: BehaviorSubject<boolean> = new BehaviorSubject(false)
+
+  gameOver: boolean = false;
 
   private timer: ReturnType<typeof setInterval> | undefined
   private timeLeft: BehaviorSubject<number> = new BehaviorSubject(
@@ -25,7 +29,8 @@ export class GameService {
   private activeMole: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(
-    private commonSrv: CommonService
+    private commonSrv: CommonService,
+    private router: Router
   ) {}
 
   /**
@@ -174,7 +179,8 @@ export class GameService {
   private endGame(): void {
     clearInterval(this.timer)
     this.setInProgress(false);
-    alert('GAME OVER!')
+    this.gameOver = true;
+    this.router.navigate(['/game/game-over'])
   }
 
   /**
@@ -188,6 +194,7 @@ export class GameService {
     this.setInProgress(false);
     this.setTime(GAME.TIME_LIMIT);
     clearInterval(this.timer)
+    this.gameOver = false;
   }
 
   getActiveMoleIndex(): Observable<number> {

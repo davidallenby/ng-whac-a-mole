@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { EXTERNAL_LINKS } from '@shared/constants/external-links.constants';
 
 @Component({
   selector: 'app-home',
@@ -9,5 +10,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-
+  repoUrl = EXTERNAL_LINKS.GITHUB_REPO;
 }

@@ -13,6 +13,9 @@ export class GameComponent {
   ) {}
   
   ngOnDestroy(): void {
+    // When the user navigates away from the game screen, we'll want to reset
+    // the state in the GameService. So the game is ready to play the next time
+    // they come back to this screen
     this.gameSrv.resetState();
   }
 }

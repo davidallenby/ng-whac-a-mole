@@ -1,31 +1,34 @@
 import { GameSettings, MoleType } from "./game.interfaces";
 
 export namespace GAME {
+  // Game difficulty settings.
   export const SETTINGS: GameSettings[] = [
     {
+      // 0 == Easy
+      // 1 == Medium
+      // 2 == Hard
       levelId: 0,
       levelName: 'Easy 😎',
-      
+      // How long/short the mole will appear for
       minVisibility: 700,
       maxVisibility: 1000
     },
     {
       levelId: 1,
       levelName: 'Medium 😧',
-      
       minVisibility: 500,
       maxVisibility: 800
     },
     {
       levelId: 2,
       levelName: 'Hard 🤯',
-      
       minVisibility: 450,
       maxVisibility: 750
     }
   ]
 
-  export const TIME_LIMIT: number = 30;
+  // The time limit on the clock.
+  export const TIME_LIMIT: number = 5;
 
   // Types of characters that appear in the game.
   // Define probability ranges:

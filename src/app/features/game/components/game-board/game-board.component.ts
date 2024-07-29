@@ -16,9 +16,7 @@ export class GameBoardComponent {
   constructor(
     private gameSrv: GameService
   ) {
-    this.settings = this.gameSrv.getDifficulty().pipe(map((settings => {
-      return settings;
-    })));
+    this.settings = this.gameSrv.getDifficulty();
 
     this.inProgress = this.gameSrv.getInProgress()
   }

@@ -24,7 +24,7 @@ This repo covers a range of topics, including:
 
 ### Project structure
 
-An angular app should have the following project structure in order to make it scalable:
+An angular app should have the following project structure in order to make it scalable. If you would like further details on each folter and why it's structured that way, view the individual readme under each folder in this repo:
 ```
 /my-angular-app (root folder level)
 │
