@@ -28,11 +28,14 @@ An angular app should have the following project structure in order to make it s
 ```
 /my-angular-app (root folder level)
 │
+├── /public (Assets & Images)
+|
 ├── /src
 │   ├── /environments (Environment configurations)
 │   │   ├── environment.ts
 │   │   ├── environment.prod.ts
 │   │   └── environment.ssr.ts
+│   │   
 │   ├── /styles (Global styles & stylesheets)
 |   |
 │   ├── /app (Main app directory)
@@ -56,7 +59,7 @@ An angular app should have the following project structure in order to make it s
 │   │   │   └── shared.module.ts
 │   │   │
 │   │   ├── /features
-│   │   │   ├── /feature1
+│   │   │   ├── /feature1 (Individual feature modules / pages / views)
 │   │   │   │   ├── /components
 │   │   │   │   ├── /services
 │   │   │   |   ├── /constants
@@ -66,21 +69,19 @@ An angular app should have the following project structure in order to make it s
 │   │   │   │   └── feature1.module.ts
 │   │   │   └── ...
 │   │   │
-│   │   ├── app-routing.module.ts
+│   │   ├── app.config.ts
+│   │   ├── app.config.server.ts
+│   │   ├── app.routes.ts
 │   │   ├── app.component.ts
-│   │   ├── app.module.ts
-│   │   ├── app.server.module.ts
-│   │   └── /assets
+│   │   │
+│   │── main.server.ts
+│   │── main.ts
+│   │── index.html
 |   |
-(Files that should exist in the top level root dir)
-│   ├── main.ts
-│   ├── main.server.ts
-│   ├── index.html
-│   ├── polyfills.ts
-│   ├── test.ts
-│   ├── tsconfig.app.json
-│   ├── tsconfig.server.json
-│   └── tsconfig.spec.json
+│── polyfills.ts
+│── tsconfig.app.json
+│── tsconfig.json
+│── tsconfig.spec.json
 
 ```
 
