@@ -1,0 +1,15 @@
+export interface GameSettings {
+  // The difficulty of the game:
+  // -- 0 == Easy
+  // -- 1 == Medium
+  // -- 2 == Hard
+  levelId: 0 | 1 | 2;
+  levelName: 'Easy 😎'|'Medium 😧'|'Hard 🤯';
+  // Time the mole stays visible for
+  minVisibility: number;
+  maxVisibility: number;
+}
+
+export interface MoleSettings {
+  moleTypeId: 1 | 2 | 3;
+}

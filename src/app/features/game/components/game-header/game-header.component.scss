@@ -1,0 +1,6 @@
+.game-header {
+  font-size: 110%;
+  @media all and (min-width: 500px) {
+    font-size: 120%;
+  }
+}

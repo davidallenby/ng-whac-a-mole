@@ -1,0 +1,17 @@
+<header id="app-header" class="py-3">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a routerLink="/" class="d-inline-block" id="logo">
+      <app-svg-icon icon="logo" [size]="42" />
+    </a>
+    <nav>
+      <ul class="list-unstyled d-flex mb-0">
+        <li class="me-3">
+          <a routerLink="/game" routerLinkActive="active" ariaCurrentWhenActive="page">Play Game</a>
+        </li>
+        <li>
+          <a routerLink="/leaderboard" routerLinkActive="active" ariaCurrentWhenActive="page">Leaderboard</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,24 @@
+<div class="game-header bg-primary">
+  <div class="container py-3 d-flex align-items-center text-light">
+    <p class="mb-0">
+      <span>Score: </span>
+      <span>
+        {{ score | async }}
+      </span>
+    </p>
+    <span class="mx-3">|</span>
+    <p class="mb-0 me-4">
+      <span>High Score: </span>
+      <span>
+        {{ highScore | async }}
+      </span>
+    </p>
+
+    <p class="mb-0 ms-auto">
+      <span class="d-inline-block me-1">⏰</span>
+      <span class="d-none d-sm-inline-block me-2">Time:</span>
+      <span>{{ time | async }}</span>
+    </p>
+  </div>
+</div>
+

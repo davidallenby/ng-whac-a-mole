@@ -1,0 +1,10 @@
+<div class="text-center{{ class ? ' ' + class : ''}}">
+  @for (item of settings; track item) {
+    <button 
+      type="button"
+      (click)="setDifficulty(item)"
+      [disabled]="inProgress | async"
+      class="btn btn-lg mx-1 mx-sm-3 my-2 {{ (activeIndex | async) === item.levelId ? 'btn-primary' : 'btn-secondary'}}"
+    >{{ item.levelName }}</button>
+  }
+</div>

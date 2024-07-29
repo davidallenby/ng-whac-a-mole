@@ -1,0 +1,36 @@
+.mole {
+  position: absolute;
+  bottom: -100%;
+  width: 80%;
+  height: 75%;
+  left: 50%;
+  transition: .25s;
+  transform: translateX(-50%);
+  background-color: chocolate;
+  will-change: transform, bottom; // Helps with CPU usage
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.show {
+    bottom: 0;
+  }
+
+  &.mole--type-2 {
+    background-color: var(--bs-info);
+  }
+
+  &.mole--type-3 {
+    background-color: goldenrod;
+  }
+}
+
+@keyframes moveUpDown {
+  0%,100% {
+    bottom: -100%;
+  }
+  50% {
+    bottom: 0;
+  }
+}
