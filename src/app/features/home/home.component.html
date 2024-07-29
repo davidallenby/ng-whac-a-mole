@@ -1,6 +1,6 @@
 <div class="home container">
   <div class="row">
-    <div class="col-12 col-md-8 mx-auto">
+    <div class="col-12 col-md-8">
       <div class="d-flex align-items-center h2">
         <span class="me-3">Hello there</span>
         <div class="animate-wave">
@@ -8,8 +8,7 @@
         </div>
       </div>
       <p class="mb-4">
-        Thanks for checking out my Angular repo! I set this up as a way to
-        guide new Angular devs towards some of the Angular best practices. This repo covers the main concepts of Angular, and how best to approach them.
+        Thanks for checking out my Angular repo! I set this up as a way to guide new Angular devs towards some of the Angular best practices.
       </p>
       <a routerLink="/game"
         class="btn btn-primary me-3"
@@ -18,7 +17,24 @@
         class="btn btn-outline-primary"
       >View leaderboard</a>
       <hr class="my-5" />
-      <h2>What this repo covers</h2>
+      <h2>Game rules</h2>
+      <p>The rules are simple - whac as many moles as you can before the timer runs out!</p>
+      <ul class="list-unstyled">
+        <li class="d-flex align-items-center mb-3">
+          <div class="square me-3 bg-chocolate"></div>
+          <p class="mb-0">Regular moles are worth 1 point</p>
+        </li>
+        <li class="d-flex align-items-center mb-3">
+          <div class="square me-3 bg-info"></div>
+          <p class="mb-0">Mega moles are worth 2 points</p>
+        </li>
+        <li class="d-flex align-items-center mb-3">
+          <div class="square me-3 bg-gold"></div>
+          <p class="mb-0">Super moles are worth 3 points. They're rare, and only a 5% chance of seeing in a game!</p>
+        </li>
+      </ul>
+      <hr class="my-5" />
+      <h2>Further info</h2>
       <p>
         <span>This repo covers all of the angular concepts, and best practices. It should act as a guide on how to scale an Angular application, and handle common scenarios. For details on each concept, or how/why things are done the way they are. View the readmes in </span>
         <a [href]="repoUrl"
