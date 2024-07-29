@@ -10,6 +10,8 @@ export interface GameSettings {
   maxVisibility: number;
 }
 
-export interface MoleSettings {
-  moleTypeId: 1 | 2 | 3;
+export interface MoleType {
+  moleTypeId: number;
+  moleTypeName: string;
+  moleProbability: number;
 }
