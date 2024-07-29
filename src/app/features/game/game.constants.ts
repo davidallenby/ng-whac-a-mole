@@ -28,7 +28,7 @@ export namespace GAME {
   ]
 
   // The time limit on the clock.
-  export const TIME_LIMIT: number = 5;
+  export const TIME_LIMIT: number = 30;
 
   // Types of characters that appear in the game.
   // Define probability ranges:
