@@ -1,6 +1,6 @@
 import { afterNextRender, Injectable } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { GameDifficulty, GameState } from '../game.interfaces'
+import { GameState } from '../game.interfaces'
 import { GAME } from '../game.constants'
 import { CommonService } from '@shared/services/common.service'
 import { GameModule } from '../game.module'
@@ -11,13 +11,12 @@ import { LeaderboardService } from '@shared/services/leaderboard.service'
   providedIn: GameModule
 })
 export class GameService {
-  gameOver: boolean = true;
+  gameOver: boolean = false;
 
   private timer: ReturnType<typeof setInterval> | undefined
   private timeLeft: BehaviorSubject<number> = new BehaviorSubject(
     GAME.TIME_LIMIT
   )
-
   private activeMole: BehaviorSubject<number> = new BehaviorSubject(0);
 
   private gameState: BehaviorSubject<GameState> =
@@ -119,7 +118,10 @@ export class GameService {
   private endGame(): void {
     clearInterval(this.timer)
     const state = this.gameState.getValue();
-    this.setCurrentState({ ...state, inProgress: false })
+    this.setCurrentState({
+      ...state, 
+      inProgress: false
+    })
     this.gameOver = true;
     this.router.navigate(['/game/game-over'])
   }

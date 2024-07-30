@@ -25,7 +25,6 @@ export class GameSettingsSelectorComponent {
     // This is to prevent the user from changing the difficulty settings while
     // the game is currently in progress.
     this.state = this.gameSrv.getCurrentState().pipe(map(state => {
-      console.log('Update: ', state)
       this.options = GAME.SETTINGS.map(opt => ({
         label: opt.levelName,
         levelId: opt.levelId,
@@ -36,7 +35,6 @@ export class GameSettingsSelectorComponent {
     }));
 
   }
-
 
   /**
    * Update the difficulty of the game. It will change the selected settings

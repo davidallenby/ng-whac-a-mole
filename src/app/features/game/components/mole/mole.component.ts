@@ -15,10 +15,9 @@ export class MoleComponent {
   show: boolean = false;
   // Mole attributes
   moleTypeId: number = 1;
+  // Current state
   private _inProgress: boolean = false;
   private _state: GameState = GAME.DEFAULT_STATE;
-
-  // delay: number = 0;
 
   activeIndex: Observable<number> | undefined = undefined;
 

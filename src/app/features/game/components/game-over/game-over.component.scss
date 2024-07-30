@@ -1,14 +1,3 @@
-@import '../../../../styles/variables';
-
-.game-over__score {
-  height: 125px;
-  width: 125px;
-  background-color: var(--bs-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .game-over__input {
   max-width: 200px;
 }

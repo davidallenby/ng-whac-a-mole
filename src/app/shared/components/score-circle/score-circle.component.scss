@@ -1,0 +1,17 @@
+.score-circle {
+  height: 64px;
+  width: 64px;
+  background-color: var(--bs-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 135%;
+
+  &.score-circle--champion {
+    background-image: url('/svg/trophy.svg');
+    // background-blend-mode: normal;
+    background-size: contain;
+    font-weight: bold;
+    font-size: 150%;
+  }
+}

@@ -10,9 +10,7 @@ export class GameComponent {
 
   constructor(
     private gameSrv: GameService
-  ) {
-
-  }
+  ) {}
   
   ngOnDestroy(): void {
     // When the user navigates away from the game screen, we'll want to reset
