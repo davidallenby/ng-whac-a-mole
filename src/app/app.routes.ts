@@ -15,7 +15,9 @@ export const routes: Routes = [
     .then((m) => m.LeaderboardComponent)
   },
   // Lazy-loaded module - This is an example of how to structure feature modules
-  // All the logic for the game is encapsulated within this feature module
+  // All the logic for the game is encapsulated within this feature module.
+  // New Angular apps should use standalone components instead of modules.
+  // However, this module was used for the purpose of demonstration.
   {
     path: 'game',
     loadChildren: () => import('@features/game/game.module').then((m) => {

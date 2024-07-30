@@ -7,7 +7,7 @@ import { map, Observable } from 'rxjs';
 @Component({
   selector: 'app-game-settings-selector',
   templateUrl: './game-settings-selector.component.html',
-  styleUrl: './game-settings-selector.component.scss'
+  styleUrl: './game-settings-selector.component.scss',
 })
 export class GameSettingsSelectorComponent {
   settings: GameSettings[] = [...GAME.SETTINGS];
