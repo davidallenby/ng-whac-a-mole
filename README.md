@@ -89,6 +89,11 @@ The "Features" folder includes components, services, and modules specific to par
 
 ### Best practices & coding style guide
 
+#### `const, let, var` when defining variables
+* If the value remains unchanged, use `const varName`
+* If the value is going to change, use let `let varName`
+* If you're going to use var... don't.
+
 #### Keep the code simple
 
 * Limit functions to 30'ish or fewer lines

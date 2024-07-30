@@ -15,7 +15,7 @@ export class GameService {
 
   private inProgress: BehaviorSubject<boolean> = new BehaviorSubject(false)
 
-  gameOver: boolean = false;
+  gameOver: boolean = true;
 
   private timer: ReturnType<typeof setInterval> | undefined
   private timeLeft: BehaviorSubject<number> = new BehaviorSubject(

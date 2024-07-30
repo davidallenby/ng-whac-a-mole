@@ -1,3 +1,21 @@
-<div class="game-over container">
-  <h1>Game over</h1>
+<div class="game-over container py-5">
+  <h1 class="text-center">Game over</h1>
+  <div class="row">
+    <div class="col-12 col-lg-8 mx-auto text-center">
+      <p class="lead">You scored a total of</p>
+      <div class="display-4 game-over__score mx-auto rounded-circle mb-4">32</div>
+      <p class="">Not bad, but the high score is: <strong>39</strong>.<br />Try again, and see if you can beat it.</p>
+      <label class="d-block mb-1">Enter your name below to save your score:</label>
+      <input type="text" max="3" class="mb-1 w-100 border rounded px-3 py-2 text-center text-uppercase" />
+      <small class="text-muted d-block mb-5">Optional: If you don't enter a name, the score won't be saved.</small>
+      <div class="game-over__controls">
+        <button type="button"
+          class="btn btn-primary btn-lg px-4 mx-2"
+        >Try again</button>
+        <button type="button"
+          class="btn btn-outline-primary btn-lg mx-2"
+        >Leaderboard</button>
+      </div>
+    </div>
+  </div>
 </div>
