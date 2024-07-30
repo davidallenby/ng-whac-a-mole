@@ -1,16 +1,16 @@
-<div class="game-header bg-primary">
+<div class="game-header bg-primary" *ngIf="state | async as state">
   <div class="container py-3 d-flex align-items-center text-light">
     <p class="mb-0">
       <span>Score: </span>
       <span>
-        {{ score | async }}
+        {{ state.currentScore }}
       </span>
     </p>
     <span class="mx-3">|</span>
     <p class="mb-0 me-4">
       <span>High Score: </span>
       <span>
-        {{ highScore | async }}
+        {{ state.highScore }}
       </span>
     </p>
 

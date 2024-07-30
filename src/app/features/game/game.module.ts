@@ -10,6 +10,7 @@ import { GameService } from './services/game.service';
 import { GameOverComponent } from './components/game-over/game-over.component';
 import { GameScreenLayoutComponent } from './components/game-screen-layout/game-screen-layout.component';
 import { GameOverGuard } from './guards/game-over.guard';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const gameRoutes:Route[] = [
   {
@@ -41,11 +42,13 @@ const gameRoutes:Route[] = [
     GameSettingsSelectorComponent,
     GameBoardComponent,
     MoleComponent,
-    GameScreenLayoutComponent
+    GameScreenLayoutComponent,
+    GameOverComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(gameRoutes)
+    RouterModule.forChild(gameRoutes),
+    ReactiveFormsModule
   ],
   providers: [
     GameService,

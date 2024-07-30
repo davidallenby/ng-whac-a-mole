@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { GameSettings } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game-board',
@@ -9,17 +8,17 @@ import { Observable } from 'rxjs';
   styleUrl: './game-board.component.scss'
 })
 export class GameBoardComponent {
-  settings: Observable<GameSettings>;
   moles: number[] = this.setMoleCount(9)
-  inProgress: Observable<boolean>;
+  showStartBtn: Observable<boolean>;
 
   constructor(
     private gameSrv: GameService
   ) {
     this.gameSrv.resetState();
-    this.settings = this.gameSrv.getDifficulty();
-    this.inProgress = this.gameSrv.getInProgress()
-
+    this.showStartBtn = this.gameSrv.getCurrentState().pipe(map(state => {
+      // Only show the start button if the game is NOT in progress
+      return !state.inProgress;
+    }))
   }
 
   /**

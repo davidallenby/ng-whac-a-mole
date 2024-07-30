@@ -105,7 +105,7 @@ The DRY (Don't Repeat Yourself) principle encourages writing code in a way that 
 
 #### Follow the Single responsibility principle
 
-The first rule of the [SOLID Principles](https://www.freecodecamp.org/news/solid-principles-for-programming-and-software-design/), is you DO talk about software design patterns. The Single Responsibility Principle suggests that each part of your code should have just one job or responsibility. This makes it easier to manage and update, as changes to one functionality won’t affect others.
+The first rule of the [SOLID Principles](https://www.freecodecamp.org/news/solid-principles-for-programming-and-software-design/). The Single Responsibility Principle suggests that each part of your code should have just one job or responsibility. This makes it easier to manage and update, as changes to one functionality won’t affect others.
 
 #### Avoid deep indentation
 ```

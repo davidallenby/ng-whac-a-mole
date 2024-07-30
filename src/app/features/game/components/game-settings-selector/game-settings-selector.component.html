@@ -1,10 +1,10 @@
-<div class="text-center{{ class ? ' ' + class : ''}}">
-  @for (item of settings; track item) {
+<div class="text-center{{ class ? ' ' + class : ''}}" *ngIf="state | async as state">
+  @for (item of options; track item.levelId) {
     <button 
       type="button"
-      (click)="setDifficulty(item)"
-      [disabled]="inProgress | async"
-      class="btn btn-lg mx-1 mx-sm-3 my-2 {{ (activeIndex | async) === item.levelId ? 'btn-primary' : 'btn-secondary'}}"
-    >{{ item.levelName }}</button>
+      (click)="setDifficulty(item.levelId)"
+      [disabled]="state.inProgress"
+      class="btn btn-lg mx-1 mx-sm-3 my-2 {{ item.active ? 'btn-primary' : 'btn-secondary'}}"
+    >{{ item.label }}</button>
   }
 </div>

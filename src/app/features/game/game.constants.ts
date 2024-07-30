@@ -1,8 +1,8 @@
-import { GameSettings, MoleType } from "./game.interfaces";
+import { GameDifficulty, GameState, MoleType } from "./game.interfaces";
 
 export namespace GAME {
   // Game difficulty settings.
-  export const SETTINGS: GameSettings[] = [
+  export const SETTINGS: GameDifficulty[] = [
     {
       // 0 == Easy
       // 1 == Medium
@@ -51,5 +51,13 @@ export namespace GAME {
       moleTypeName: 'Super mole',
       moleProbability: 0.05
     },
-  ]
+  ];
+
+  export const DEFAULT_STATE: GameState = {
+    currentScore: 0,
+    highScore: 0,
+    levelId: 0,
+    inProgress: false,
+    gameOver: false
+  }
 }

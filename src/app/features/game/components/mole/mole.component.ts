@@ -1,6 +1,8 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { GAME } from '@features/game/game.constants';
+import { GameState } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
-import { map, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mole',
@@ -14,7 +16,9 @@ export class MoleComponent {
   // Mole attributes
   moleTypeId: number = 1;
   private _inProgress: boolean = false;
-  delay: number = 0;
+  private _state: GameState = GAME.DEFAULT_STATE;
+
+  // delay: number = 0;
 
   activeIndex: Observable<number> | undefined = undefined;
 
@@ -26,11 +30,12 @@ export class MoleComponent {
   constructor(
     private gameSrv: GameService
   ) {
-    const inProgress = this.gameSrv.getInProgress().subscribe(bool => {
-      this._inProgress = bool;
-      return bool;
+    const state = this.gameSrv.getCurrentState().subscribe(state => {
+      this._inProgress = state.inProgress;
+      this._state = state;
+      return state.inProgress;
     });
-    this.subs.push(inProgress)
+    this.subs.push(state)
 
     // Subscribe to the active mole index changes.
     const activeIndex = this.gameSrv.getActiveMoleIndex().subscribe(i => {
@@ -81,9 +86,9 @@ export class MoleComponent {
     // Hide the mole (since it was clicked)
     this.show = false;
     // Get the current score value
-    let score = this.gameSrv.getScoreValue();
+    let currentScore = this._state.currentScore + this.moleTypeId;
     // Increment the score by 1 (notify other components)
-    this.gameSrv.setScore(score + this.moleTypeId);
+    this.gameSrv.setCurrentState({ ...this._state, currentScore });
     // Give the hide animation a chance to complete before running the next
     // mole generation
     setTimeout(() => {

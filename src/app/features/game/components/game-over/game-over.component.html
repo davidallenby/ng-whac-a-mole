@@ -1,16 +1,31 @@
-<div class="game-over container py-5">
+<div class="game-over container py-5" *ngIf="state | async as state">
   <h1 class="text-center">Game over</h1>
   <div class="row">
     <div class="col-12 col-lg-8 mx-auto text-center">
       <p class="lead">You scored a total of</p>
-      <div class="display-4 game-over__score mx-auto rounded-circle mb-4">32</div>
-      <p class="">Not bad, but the high score is: <strong>39</strong>.<br />Try again, and see if you can beat it.</p>
+      <div class="display-4 game-over__score mx-auto rounded-circle mb-4">{{ state.currentScore }}</div>
+      <p class="">Not bad, but the high score is: <strong>{{ state.highScore }}</strong>.<br />Try again, and see if you can beat it.</p>
       <label class="d-block mb-1">Enter your name below to save your score:</label>
-      <input type="text" max="3" class="mb-1 w-100 border rounded px-3 py-2 text-center text-uppercase" />
-      <small class="text-muted d-block mb-5">Optional: If you don't enter a name, the score won't be saved.</small>
+      <form [formGroup]="form">
+        <input type="text" 
+          class="game-over__input mb-1 d-block mx-auto border rounded px-3 py-2 text-center text-uppercase h4"
+          formControlName="name"
+          maxlength="3"
+        />
+        <ng-container *ngIf="name?.errors?.['length']; else description">
+          <small class="text-danger d-block mb-5">
+            {{ name?.errors?.['length'] }}
+          </small>
+        </ng-container>
+        <ng-template #description>
+          <small class="text-muted d-block mb-5">Optional: If you don't enter a name, the score won't be saved.</small>
+        </ng-template>
+      </form>
+      
       <div class="game-over__controls">
         <button type="button"
           class="btn btn-primary btn-lg px-4 mx-2"
+          (click)="tryAgainClick()"
         >Try again</button>
         <button type="button"
           class="btn btn-outline-primary btn-lg mx-2"

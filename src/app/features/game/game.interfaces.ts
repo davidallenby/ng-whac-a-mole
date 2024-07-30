@@ -1,4 +1,4 @@
-export interface GameSettings {
+export interface GameDifficulty {
   // The difficulty of the game:
   // -- 0 == Easy
   // -- 1 == Medium
@@ -14,4 +14,12 @@ export interface MoleType {
   moleTypeId: number;
   moleTypeName: string;
   moleProbability: number;
+}
+
+export interface GameState {
+  levelId: number;
+  currentScore: number;
+  highScore: number;
+  inProgress: boolean;
+  gameOver: boolean;
 }

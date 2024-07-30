@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GameState } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
 import { Observable } from 'rxjs';
 
@@ -8,16 +9,14 @@ import { Observable } from 'rxjs';
   styleUrl: './game-header.component.scss'
 })
 export class GameHeaderComponent {
-
-  score: Observable<number>;
-  highScore: Observable<number>;
   time: Observable<number>;
+  state: Observable<GameState>;
 
   constructor(
-    private gameSrv: GameService
+    private gameSrv: GameService,
   ) {
-    this.score = this.gameSrv.getScore();
-    this.highScore = this.gameSrv.getHighScore();
     this.time = this.gameSrv.getTime();
+
+    this.state = this.gameSrv.getCurrentState();
   }
 }

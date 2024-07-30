@@ -1,20 +1,16 @@
-import { Injectable } from '@angular/core'
+import { afterNextRender, Injectable } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { GameSettings } from '../game.interfaces'
+import { GameDifficulty, GameState } from '../game.interfaces'
 import { GAME } from '../game.constants'
 import { CommonService } from '@shared/services/common.service'
 import { GameModule } from '../game.module'
 import { Router } from '@angular/router'
+import { LeaderboardService } from '@shared/services/leaderboard.service'
 
 @Injectable({
   providedIn: GameModule
 })
 export class GameService {
-  private score: BehaviorSubject<number> = new BehaviorSubject(0)
-  private highScore: BehaviorSubject<number> = new BehaviorSubject(0)
-
-  private inProgress: BehaviorSubject<boolean> = new BehaviorSubject(false)
-
   gameOver: boolean = true;
 
   private timer: ReturnType<typeof setInterval> | undefined
@@ -22,49 +18,30 @@ export class GameService {
     GAME.TIME_LIMIT
   )
 
-  private difficulty: BehaviorSubject<GameSettings> =
-    // Easy mode is the default setting
-    new BehaviorSubject({ ...GAME.SETTINGS[0] })
-
   private activeMole: BehaviorSubject<number> = new BehaviorSubject(0);
+
+  private gameState: BehaviorSubject<GameState> =
+    new BehaviorSubject(GAME.DEFAULT_STATE)
 
   constructor(
     private commonSrv: CommonService,
+    private leaderSrv: LeaderboardService,
     private router: Router
-  ) {}
-
-  /**
-   * Get the current score from state
-   *
-   * @return {*}  {Observable<number>}
-   * @memberof GameService
-   */
-  getScore (): Observable<number> {
-    return this.score.asObservable()
+  ) {
+    // Get the current high score and set it in state.
+    this.fetchAndSetHighScoreInState();
   }
 
-  getScoreValue(): number {
-    return this.score.getValue();
-  }
-
-  /**
-   * Set the current score in state
-   *
-   * @param {number} num
-   * @memberof GameService
-   */
-  setScore (num: number): void {
-    this.score.next(num)
-  }
-
-  /**
-   * Get the current high score from the leaderboard
-   *
-   * @return {*}  {Observable<number>}
-   * @memberof GameService
-   */
-  getHighScore (): Observable<number> {
-    return this.highScore.asObservable()
+  private fetchAndSetHighScoreInState(): void {
+    afterNextRender(() => {
+      this.leaderSrv.getHighScore().subscribe(hs => {
+        const current = this.gameState.getValue();
+        this.setCurrentState({
+          ...current,
+          highScore: hs
+        })
+      })
+    })
   }
 
   /**
@@ -88,46 +65,6 @@ export class GameService {
   }
 
   /**
-   * Get the user's selected settings.
-   *
-   * @return {*}  {Observable<GameSettings>}
-   * @memberof GameService
-   */
-  getDifficulty(): Observable<GameSettings> {
-    return this.difficulty.asObservable();
-  }
-  /**
-   * Set the difficult of the game. We'll use this to create more squares, and
-   * increase the speed of the game
-   *
-   * @param {GameSettings} settings
-   * @memberof GameService
-   */
-  setDifficulty(settings: GameSettings): void {
-    this.difficulty.next(settings)
-  }
-
-  /**
-   * Whether or not the game has started.
-   *
-   * @return {*}  {Observable<boolean>}
-   * @memberof GameService
-   */
-  getInProgress(): Observable<boolean> {
-    return this.inProgress.asObservable();
-  }
-
-  /**
-   * Tell the game whether or not it's in progress
-   *
-   * @param {boolean} bool
-   * @memberof GameService
-   */
-  setInProgress(bool: boolean): void {
-    this.inProgress.next(bool);
-  }
-
-  /**
    * Function that starts the timer, and notifies the other components to start
    * animating
    *
@@ -135,14 +72,17 @@ export class GameService {
    */
   startGame (): void {
     clearInterval(this.timer)
-    // Reset the score to 0
-    this.setScore(0)
-    // Tell the game that the timer has started
-    this.setInProgress(true);
+    const state = this.gameState.getValue();
+    this.setCurrentState({
+      ...state,
+      // Reset the score to 0
+      currentScore: 0,
+      // Tell the game that the timer has started
+      inProgress: true
+    })
     // Reset the timer to 30 seconds
     let count = GAME.TIME_LIMIT
     this.setTime(count)
-
     const i = this.getRandomMoleIndex();
     this.setActiveMoleIndex(i);
 
@@ -178,7 +118,8 @@ export class GameService {
    */
   private endGame(): void {
     clearInterval(this.timer)
-    this.setInProgress(false);
+    const state = this.gameState.getValue();
+    this.setCurrentState({ ...state, inProgress: false })
     this.gameOver = true;
     this.router.navigate(['/game/game-over'])
   }
@@ -190,8 +131,13 @@ export class GameService {
    * @memberof GameService
    */
   resetState(): void {
-    this.setScore(0);
-    this.setInProgress(false);
+    const current = this.gameState.getValue();
+    this.setCurrentState({
+      ...current,
+      currentScore: 0,
+      inProgress: false
+    })
+    
     this.setTime(GAME.TIME_LIMIT);
     clearInterval(this.timer)
     this.gameOver = false;
@@ -213,9 +159,16 @@ export class GameService {
    * @memberof GameService
    */
   getRandomVisibility(): number {
-    const settings = this.difficulty.getValue();
-    const max = settings.maxVisibility;
-    const min = settings.minVisibility;
+    // get the current state
+    const state = this.gameState.getValue();
+    // We need to fetch the visibility settings from the settings object. Fall
+    // back to easy mode if not found.
+    const found = GAME.SETTINGS.find(item => item.levelId === state.levelId) ??
+    GAME.SETTINGS[0];
+    // Set the min/max visibility for a mole
+    const max = found.maxVisibility;
+    const min = found.minVisibility;
+    // Get a random number and return
     const value = this.getRandomIntegerInRange(min, max);
     return Math.round(value)
   }
@@ -256,5 +209,13 @@ export class GameService {
     }
     // By default, we'll return a regular mole.
     return 1; 
+  }
+
+  getCurrentState(): Observable<GameState> {
+    return this.gameState.asObservable();    
+  }
+
+  setCurrentState(state: GameState): void {
+    this.gameState.next(state);
   }
 }
