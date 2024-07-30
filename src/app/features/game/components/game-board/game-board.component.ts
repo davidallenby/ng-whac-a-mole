@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GameSettings } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game-board',
@@ -16,9 +16,10 @@ export class GameBoardComponent {
   constructor(
     private gameSrv: GameService
   ) {
+    this.gameSrv.resetState();
     this.settings = this.gameSrv.getDifficulty();
-
     this.inProgress = this.gameSrv.getInProgress()
+
   }
 
   /**

@@ -13,13 +13,15 @@ export class CommonService {
    * property with a chain of properties to reach the target property
    * e.g. topLevelProperty.levelTwoProperty.levelThreeProperty
    * 
+   * Function will sort in DESCENDING order by default.
+   * 
    * @param key
    * @param descending 
    * @returns 
    */
-  objectSort (key: string, descending: boolean = false): any {
+  objectSort (key: string, ascending: boolean = false): any {
     // Set the sort order based on the dev preference
-    const sortOrder = (descending) ? 1 : -1;
+    const sortOrder = (ascending) ? 1 : -1;
     // Split the property chain into an array.
     const properties = key.split('.');
     // Get the length of the array, so we can iterate over later.
