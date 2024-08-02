@@ -4,25 +4,7 @@
       <h1 class="text-center mb-4">Leaderboard</h1>
       <ng-container *ngIf="!!scores.length; else empty">
         @for (item of scores; track item; let i = $index) {
-          <div class="px-4 py-3 d-flex align-items-center justify-content-between border rounded mb-4 shadow"
-            [ngClass]="{
-              'border-primary': !i
-            }"
-          >
-            <div class="">
-              <div class="me-4 mb-2">
-                <app-leaderboard-position [position]="i" />
-                <h2 class="h4 mb-0">{{ item.playerName.toUpperCase() }}</h2>
-              </div>
-              <p class="mb-0 text-muted small">Completed {{ item.dateCreated | date: 'dd.MM.yyyy' }}</p>
-            </div>
-            <div>
-              <app-score-circle 
-                [score]="item.score" 
-                [index]="i"
-              />
-            </div>
-          </div>
+          <app-leaderboard-item [index]="i" [item]="item" />
         }
       </ng-container>
       <ng-template #empty>

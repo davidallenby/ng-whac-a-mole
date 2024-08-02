@@ -3,9 +3,14 @@
   <div class="row">
     <div class="col-12 col-lg-8 mx-auto text-center">
       <p class="lead">You scored a total of</p>
-      <div class="display-4 game-over__score mx-auto rounded-circle mb-4">{{ state.currentScore }}</div>
+      <app-score-circle [score]="state.currentScore" 
+        size="lg"
+        class="mb-5"
+      ></app-score-circle>
+
       <ng-container *ngIf="!!state.currentScore">
-        <p class="">Not bad, but the high score is: <strong>{{ state.highScore }}</strong>.<br />Try again, and see if you can beat it.</p>
+        <p *ngIf="isHighest">Congratulations! You got the highest score.</p>
+        <p *ngIf="!isHighest">Not bad, but the high score is: <strong>{{ state.highScore }}</strong>.<br />Try again, and see if you can beat it.</p>
         <label class="d-block mb-1">Enter your name below to save your score:</label>
         <form [formGroup]="form">
           <input type="text" 

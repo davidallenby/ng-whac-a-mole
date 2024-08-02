@@ -6,6 +6,7 @@ import { LeaderboardService } from '@shared/services/leaderboard.service';
 import { Observable } from 'rxjs';
 import { LeaderboardPositionComponent } from "./components/leaderboard-position/leaderboard-position.component";
 import { RouterLink } from '@angular/router';
+import { LeaderboardItemComponent } from './components/leaderboard-item/leaderboard-item.component';
 @Component({
   selector: 'app-leaderboard',
   // This is a standalone component. It does not have a module.
@@ -17,7 +18,8 @@ import { RouterLink } from '@angular/router';
     DatePipe,
     NgClass,
     RouterLink,
-    LeaderboardPositionComponent
+    LeaderboardPositionComponent,
+    LeaderboardItemComponent
 ],
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.scss',

@@ -10,7 +10,8 @@ import { GameService } from './services/game.service';
 import { GameOverComponent } from './components/game-over/game-over.component';
 import { GameScreenLayoutComponent } from './components/game-screen-layout/game-screen-layout.component';
 import { GameOverGuard } from './guards/game-over.guard';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ScoreCircleComponent } from "../../shared/components/score-circle/score-circle.component";
 
 const gameRoutes:Route[] = [
   {
@@ -48,8 +49,9 @@ const gameRoutes:Route[] = [
   imports: [
     CommonModule,
     RouterModule.forChild(gameRoutes),
-    ReactiveFormsModule
-  ],
+    ReactiveFormsModule,
+    ScoreCircleComponent
+],
   providers: [
     GameService,
     GameOverGuard
