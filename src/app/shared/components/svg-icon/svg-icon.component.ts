@@ -11,16 +11,7 @@ export class SvgIconComponent {
   // The style class of the component. This is set to inline-block by default.
   // So we can change the height/width.
   @Input() class: string = 'd-inline-block';
-
-  // The file path where the SVG is stored. Disgameed as a mask image
-  @HostBinding('style.-webkit-mask-image')
-  private _path!: string;
-  @Input()
-  set path(filePath: string) {
-    this._path = `url("${filePath}")`;
-  }
-
-
+  // THe name of the icon in the directory. Absolute URL is handled in template.
   @Input() icon: string = '';
 
   // Height & Width properties bound to the host element.

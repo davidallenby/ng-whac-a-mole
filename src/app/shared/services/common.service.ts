@@ -12,7 +12,6 @@ export class CommonService {
    * It can work with deeply nested properties too. Just specify the nested key
    * property with a chain of properties to reach the target property
    * e.g. topLevelProperty.levelTwoProperty.levelThreeProperty
-   * 
    * Function will sort in DESCENDING order by default.
    * 
    * @param key

@@ -1,5 +1,5 @@
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { LeaderboardPositionComponent } from '../leaderboard-position/leaderboard-position.component';
 import { ScoreCircleComponent } from '@shared/components/score-circle/score-circle.component';
 import { LeaderboardDataItem } from '@shared/interfaces/leaderboard.interfaces';
@@ -14,7 +14,8 @@ import { LeaderboardDataItem } from '@shared/interfaces/leaderboard.interfaces';
     ScoreCircleComponent
   ],
   templateUrl: './leaderboard-item.component.html',
-  styleUrl: './leaderboard-item.component.scss'
+  styleUrl: './leaderboard-item.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LeaderboardItemComponent {
   @Input() index: number = 0;

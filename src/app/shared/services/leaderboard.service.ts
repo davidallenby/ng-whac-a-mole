@@ -19,6 +19,13 @@ export class LeaderboardService {
     private commonSrv: CommonService
   ) { }
 
+  /**
+   * We need a list of all the scores that have been stored so we can present
+   * them as a list in the leaderboard screen.
+   *
+   * @return {*}  {Observable<LeaderboardDataItem[]>}
+   * @memberof LeaderboardService
+   */
   getAllScores(): Observable<LeaderboardDataItem[]> {
     return new Observable<LeaderboardDataItem[]>((subject) => {
       try {
@@ -35,6 +42,12 @@ export class LeaderboardService {
     });
   }
 
+  /**
+   * We need the high score so the user knows what their target is to beat.
+   *
+   * @return {*}  {Observable<number>}
+   * @memberof LeaderboardService
+   */
   getHighScore(): Observable<number> {
     return this.getAllScores().pipe(map(data => {
       if (!data.length) { return 0; }
@@ -60,7 +73,7 @@ export class LeaderboardService {
       .sort(this.commonSrv.objectSort('score'))
       // Trim the array to only retain the top 10 scores
       copy.slice(0, 9);
-      // Store it to the 
+      // Store it to local storage (eventually, database)
       console.log('Saving item: ', copy)
       localStorage.setItem('ngWhacAMole', JSON.stringify(copy));
       return this.getHighScore();  

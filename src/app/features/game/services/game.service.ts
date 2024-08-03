@@ -31,6 +31,13 @@ export class GameService {
     this.fetchAndSetHighScoreInState();
   }
 
+  /**
+   * When this service is initialised we need to fetch the data from storage and
+   * apply it to the current state. So that the components can access.
+   *
+   * @private
+   * @memberof GameService
+   */
   private fetchAndSetHighScoreInState(): void {
     afterNextRender(() => {
       this.leaderSrv.getHighScore().subscribe(hs => {
@@ -61,6 +68,20 @@ export class GameService {
    */
   setTime (num: number): void {
     this.timeLeft.next(num)
+  }
+
+  /**
+   * Get/Set the currently active mole index. Updates the state so we know which
+   * mole is supposed to appear
+   *
+   * @return {*}  {Observable<number>}
+   * @memberof GameService
+   */
+  getActiveMoleIndex(): Observable<number> {
+    return this.activeMole.asObservable();
+  }
+  setActiveMoleIndex(index: number): void {
+    this.activeMole.next(index)
   }
 
   /**
@@ -145,14 +166,6 @@ export class GameService {
     this.gameOver = false;
   }
 
-  getActiveMoleIndex(): Observable<number> {
-    return this.activeMole.asObservable();
-  }
-
-  setActiveMoleIndex(index: number): void {
-    this.activeMole.next(index)
-  }
-
   /**
    * This function gets a random visibility integer value. This will be for how
    * long the mole appears vibile for.
@@ -175,13 +188,24 @@ export class GameService {
     return Math.round(value)
   }
 
+  /**
+   * Required for generating active mole index, new mole type ID, and the length
+   * of time the mole is active.
+   *
+   * @private
+   * @param {number} min
+   * @param {number} max
+   * @return {*}  {number}
+   * @memberof GameService
+   */
   private getRandomIntegerInRange(min: number, max: number): number {
     return (Math.random() * (max - min) + min * 1);
   }
 
   /**
-   * Generates a character type ID based on the probability set in the
-   * character settings
+   * When a new mole is ready to appear, we want to provide it with a random
+   * type ID. So that it can increase/decrease the amount of points the user
+   * gets for clicking it successfully.
    *
    * @return {*}  {number}
    * @memberof GameService

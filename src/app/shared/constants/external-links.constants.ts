@@ -1,3 +1,6 @@
+/**
+ * Links that navigate the user away to other sites/locations
+ */
 export namespace EXTERNAL_LINKS {
   // My github profile
   export const GITHUB_PROFILE: string = 'https://github.com/davidallenby';
