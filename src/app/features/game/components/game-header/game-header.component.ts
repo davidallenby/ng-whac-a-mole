@@ -9,14 +9,17 @@ import { Observable } from 'rxjs';
   styleUrl: './game-header.component.scss'
 })
 export class GameHeaderComponent {
-  time: Observable<number>;
-  state: Observable<GameState>;
+  time: Observable<number>|undefined;
+  state: Observable<GameState>|undefined;
 
   constructor(
     private gameSrv: GameService,
   ) {
-    this.time = this.gameSrv.getTime();
+    
+  }
 
+  ngOnInit() {
+    this.time = this.gameSrv.getTime();
     this.state = this.gameSrv.getCurrentState();
   }
 }

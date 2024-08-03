@@ -19,8 +19,6 @@ export class MoleComponent {
   private _inProgress: boolean = false;
   private _state: GameState = GAME.DEFAULT_STATE;
 
-  activeIndex: Observable<number> | undefined = undefined;
-
   subs: Subscription[] = []
   clicked: boolean = false;
 
@@ -29,6 +27,9 @@ export class MoleComponent {
   constructor(
     private gameSrv: GameService
   ) {
+  }
+
+  ngOnInit() {
     const state = this.gameSrv.getCurrentState().subscribe(state => {
       this._inProgress = state.inProgress;
       this._state = state;

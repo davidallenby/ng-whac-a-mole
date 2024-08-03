@@ -9,12 +9,15 @@ import { map, Observable } from 'rxjs';
 })
 export class GameBoardComponent {
   moles: number[] = this.setMoleCount(9)
-  showStartBtn: Observable<boolean>;
+  showStartBtn: Observable<boolean> | undefined;
 
   constructor(
     private gameSrv: GameService
   ) {
-    this.gameSrv.resetState();
+  }
+
+  ngOnInit(){
+    this.gameSrv.resetState(); // Reset the default state when the board laods
     this.showStartBtn = this.gameSrv.getCurrentState().pipe(map(state => {
       // Only show the start button if the game is NOT in progress
       return !state.inProgress;

@@ -12,7 +12,7 @@ import { GAME } from '@features/game/game.constants';
 })
 export class GameSettingsSelectorComponent {
   options: GameSettingsSelectorItem[] = [];
-  state: Observable<GameState>
+  state: Observable<GameState>|undefined
   _state: GameState = GAME.DEFAULT_STATE;
   activeIndex: number = 0;
 
@@ -21,6 +21,9 @@ export class GameSettingsSelectorComponent {
   constructor(
     private gameSrv: GameService
   ) {
+  }
+
+  ngOnInit() {
     // We need to know if the game is in progress. So we can disable the buttons
     // This is to prevent the user from changing the difficulty settings while
     // the game is currently in progress.
@@ -33,7 +36,6 @@ export class GameSettingsSelectorComponent {
       this._state = state;
       return state;
     }));
-
   }
 
   /**

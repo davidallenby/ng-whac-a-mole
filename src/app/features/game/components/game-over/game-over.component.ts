@@ -26,7 +26,7 @@ export class GameOverComponent {
     return this.form.get('name');
   }
 
-  state: Observable<GameState>;
+  state: Observable<GameState>|undefined;
   _state: GameState = GAME.DEFAULT_STATE;
   isHighest: boolean = false;
 
@@ -35,6 +35,9 @@ export class GameOverComponent {
     private leaderSrv: LeaderboardService,
     private router: Router
   ) {
+  }
+
+  ngOnInit() {
     this.state = this.gameSrv.getCurrentState().pipe(map(data => {
       this._state = data;
       this.isHighest = (data.currentScore > data.highScore)
