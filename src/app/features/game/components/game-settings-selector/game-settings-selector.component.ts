@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { GameState } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
 import { map, Observable } from 'rxjs';
 import { GameSettingsSelectorItem } from './game-settings-selector.interface';
-import { GAME } from '@features/game/game.constants';
+import { GameState } from '@shared/interfaces/game.interfaces';
+import { GAME } from '@shared/constants/game.constants';
 
 @Component({
   selector: 'app-game-settings-selector',
@@ -28,7 +28,7 @@ export class GameSettingsSelectorComponent {
     // This is to prevent the user from changing the difficulty settings while
     // the game is currently in progress.
     this.state = this.gameSrv.getCurrentState().pipe(map(state => {
-      this.options = GAME.SETTINGS.map(opt => ({
+      this.options = GAME.LEVELS.map(opt => ({
         label: opt.levelName,
         levelId: opt.levelId,
         active: (state.levelId === opt.levelId)

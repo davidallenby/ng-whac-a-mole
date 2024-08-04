@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LeaderboardDataItem } from '@shared/interfaces/leaderboard.interfaces';
-import { map, Observable, switchMap, take } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { CommonService } from './common.service';
 
 /**
@@ -72,10 +72,8 @@ export class LeaderboardService {
       // sort the list in descending order
       .sort(this.commonSrv.objectSort('score'))
       // Trim the array to only retain the top 10 scores
-      copy.slice(0, 9);
       // Store it to local storage (eventually, database)
-      console.log('Saving item: ', copy)
-      localStorage.setItem('ngWhacAMole', JSON.stringify(copy));
+      localStorage.setItem('ngWhacAMole', JSON.stringify(copy.slice(0, 10)));
       return this.getHighScore();  
     }))
   }

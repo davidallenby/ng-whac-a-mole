@@ -9,12 +9,19 @@
     <app-leaderboard-position [position]="index" />
     <h2 class="h4 mb-0">{{ item.playerName.toUpperCase() }}</h2>
   </div>
-  <p class="mb-0 text-muted small">Completed {{ item.dateCreated | date: 'dd.MM.yyyy' }}</p>
+  <p class="mb-0 text-muted small">
+    <span class="d-none d-sm-inline">Completed: </span>
+    <span>{{ item.dateCreated | date: 'dd.MM.yyyy' }}</span>
+  </p>
 </div>
 <div>
   <app-score-circle 
     [score]="item.score" 
     [index]="index"
+    class="mb-3"
   />
+  <span class="badge text-bg-secondary">
+    {{ item.levelId | levelName }}
+  </span>
 </div>
 </div>

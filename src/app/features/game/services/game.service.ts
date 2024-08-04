@@ -1,11 +1,11 @@
 import { afterNextRender, Injectable } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { GameState } from '../game.interfaces'
-import { GAME } from '../game.constants'
+import { GAME } from '../../../shared/constants/game.constants'
 import { CommonService } from '@shared/services/common.service'
 import { GameModule } from '../game.module'
 import { Router } from '@angular/router'
 import { LeaderboardService } from '@shared/services/leaderboard.service'
+import { GameState } from '@shared/interfaces/game.interfaces'
 
 @Injectable({
   providedIn: GameModule
@@ -178,8 +178,8 @@ export class GameService {
     const state = this.gameState.getValue();
     // We need to fetch the visibility settings from the settings object. Fall
     // back to easy mode if not found.
-    const found = GAME.SETTINGS.find(item => item.levelId === state.levelId) ??
-    GAME.SETTINGS[0];
+    const found = GAME.LEVELS.find(item => item.levelId === state.levelId) ??
+    GAME.LEVELS[0];
     // Set the min/max visibility for a mole
     const max = found.maxVisibility;
     const min = found.minVisibility;

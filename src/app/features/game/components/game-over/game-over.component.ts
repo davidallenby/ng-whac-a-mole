@@ -5,8 +5,8 @@ import { GameService } from '@features/game/services/game.service';
 import { LeaderboardService } from '@shared/services/leaderboard.service';
 import { validatePlayerNameField } from './game-over.validators';
 import { map, Observable, take } from 'rxjs';
-import { GameState } from '@features/game/game.interfaces';
-import { GAME } from '@features/game/game.constants';
+import { GAME } from '@shared/constants/game.constants';
+import { GameState } from '@shared/interfaces/game.interfaces';
 
 @Component({
   selector: 'app-game-over',

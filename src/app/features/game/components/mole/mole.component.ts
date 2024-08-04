@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { GAME } from '@features/game/game.constants';
-import { GameState } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
-import { Observable, Subscription } from 'rxjs';
+import { GAME } from '@shared/constants/game.constants';
+import { GameState } from '@shared/interfaces/game.interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mole',

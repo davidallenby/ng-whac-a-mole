@@ -1,4 +1,4 @@
-export interface GameDifficulty {
+export interface GameLevel {
   // The difficulty of the game:
   // -- 0 == Easy
   // -- 1 == Medium

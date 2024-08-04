@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { GameState } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
+import { GameState } from '@shared/interfaces/game.interfaces';
 import { Observable } from 'rxjs';
 
 @Component({

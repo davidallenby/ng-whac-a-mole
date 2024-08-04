@@ -1,8 +1,8 @@
-import { GameDifficulty, GameState, MoleType } from "./game.interfaces";
+import { GameLevel, GameState, MoleType } from "@shared/interfaces/game.interfaces";
 
 export namespace GAME {
   // Game difficulty settings.
-  export const SETTINGS: GameDifficulty[] = [
+  export const LEVELS: GameLevel[] = [
     {
       // 0 == Easy
       // 1 == Medium

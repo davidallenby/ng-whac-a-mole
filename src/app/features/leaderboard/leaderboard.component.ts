@@ -20,7 +20,7 @@ import { LeaderboardItemComponent } from './components/leaderboard-item/leaderbo
     RouterLink,
     LeaderboardPositionComponent,
     LeaderboardItemComponent
-],
+  ],
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

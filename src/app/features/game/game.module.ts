@@ -51,7 +51,7 @@ const gameRoutes:Route[] = [
     RouterModule.forChild(gameRoutes),
     ReactiveFormsModule,
     ScoreCircleComponent
-],
+  ],
   providers: [
     GameService,
     GameOverGuard

@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { LeaderboardPositionComponent } from '../leaderboard-position/leaderboard-position.component';
 import { ScoreCircleComponent } from '@shared/components/score-circle/score-circle.component';
 import { LeaderboardDataItem } from '@shared/interfaces/leaderboard.interfaces';
+import { LevelNamePipe } from '@features/leaderboard/pipes/level-name.pipe';
 
 @Component({
   selector: 'app-leaderboard-item',
@@ -11,7 +12,8 @@ import { LeaderboardDataItem } from '@shared/interfaces/leaderboard.interfaces';
     NgClass,
     LeaderboardPositionComponent,
     DatePipe,
-    ScoreCircleComponent
+    ScoreCircleComponent,
+    LevelNamePipe
   ],
   templateUrl: './leaderboard-item.component.html',
   styleUrl: './leaderboard-item.component.scss',
