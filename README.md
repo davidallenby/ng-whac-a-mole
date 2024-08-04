@@ -159,12 +159,7 @@ As mentioned in the previous section, an Angular app should have an organised an
 * Separate words with dashes. E.g. `user-list.component.ts`
 * Classes should be named in CamelCase. E.g. `ButtonComponent`. However, this won't be an issue if you use Angular CLI to generate your components, services etc.
 * Component selectors should follow this format: `app-game-board`, `app-leaderboard`, `app-button`. This will maintain consistency with components throughout the app.
-* Use consistent names for all pipes, named after their feature. The pipe class name should use `UpperCamelCase` (the general convention for class names), and the corresponding name string should use `lowerCamelCase`. The name string cannot use hyphens ("dash-case" or "kebab-case"). E.g. A pipe class will look like this:
-
-```
-@Pipe({ standalone: true, name: 'addressString' })
-export class AddressStringPipe implements PipeTransform { } 
-```
+* Use consistent names for all pipes, named after their feature. The pipe class name should use `UpperCamelCase` (the general convention for class names), and the corresponding name string should use `lowerCamelCase`. The name string cannot use hyphens ("dash-case" or "kebab-case"). E.g. A pipe class will look [like this](https://github.com/davidallenby/ng-whac-a-mole/blob/master/src/app/features/leaderboard/pipes/level-name.pipe.ts)
 
 
 #### Component design
@@ -223,13 +218,33 @@ Business in the back, party in the front - You should keep all business logic in
 
 If you are confident that a part of the application is not affected by a state change, you can use `OnPush` to skip change detection in an entire component subtree. For an example of when to use it, see the [Angular docs](https://angular.dev/best-practices/skipping-subtrees#common-change-detection-scenarios) for further details.
 
+#### Lazy loaded components/modules
+
+In Angular, lazy-loaded modules and standalone components are strategies to optimize application performance by loading resources only when needed. 
+
+Lazy-loaded modules allow you to divide your app into smaller, feature-specific bundles that are loaded on demand, reducing the initial load time and improving the user experience. Similarly, lazy-loaded standalone components, introduced to streamline development, are individual components that can be directly loaded via routes without requiring a module, further simplifying the architecture and reducing boilerplate code. We use modules to encapsulate and organize related components, services, and directives, facilitating maintainability and scalability. Standalone components offer a more lightweight approach, enabling faster development cycles by reducing dependencies and setup overhead. Together, these techniques enhance modularity, maintainability, and performance in Angular applications. The Angular team advise to use standalone components for all new development moving forward.
+
+To see an example of how to implement lazy loaded modules/standalone components, [see here](https://github.com/davidallenby/ng-whac-a-mole/blob/master/src/app/app.routes.ts)
+
+#### Track By - ngFor
+Implement trackBy functions to optimize rendering of lists. See an example in the [leaderboard component](https://github.com/davidallenby/ng-whac-a-mole/blob/master/src/app/features/leaderboard/leaderboard.component.html)
+
+
+#### Lazy load images
+
+Load images on demand using techniques like the loading="lazy" attribute for images.
+
+```
+<img src="large-image.jpg" loading="lazy" alt="Description">
+```
+
+... and of course it goes without saying: Prior to deployment, minimize and compress assets by building for production with `ng build --prod`
+
 --------
 
 # TODO
 Still need to complete the following readme sections:
-* Performance
 * Running the app
-* Dependencies & Packages
 * Prerequisites
 * Testing & debugging
 
