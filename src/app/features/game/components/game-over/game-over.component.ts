@@ -12,7 +12,6 @@ import { GAME } from '@features/game/game.constants';
   selector: 'app-game-over',
   templateUrl: './game-over.component.html',
   styleUrl: './game-over.component.scss',
-  
 })
 export class GameOverComponent {
   // Form group for entering player name

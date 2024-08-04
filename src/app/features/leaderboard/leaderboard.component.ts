@@ -33,9 +33,9 @@ export class LeaderboardComponent {
     private leaderSrv: LeaderboardService,
     private cdr: ChangeDetectorRef
   ) {
-    // After next render will wait until the DOM loads. Can't access
-    // storage from within Angular SSR.
-    // TODO: Investigate afterNextRender
+    // After next render runs once, the next time that all components have been 
+    // rendered to the DOM. We don't have access to local storage using SSR.
+    // So we need to run this when localStorage becomes available.
     afterNextRender(() => {
       this.scores = this.leaderSrv.getAllScores();
       this.cdr.detectChanges();
