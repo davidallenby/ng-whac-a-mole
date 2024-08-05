@@ -3,10 +3,12 @@ import { afterNextRender, ChangeDetectionStrategy, ChangeDetectorRef, Component 
 import { ScoreCircleComponent } from '@shared/components/score-circle/score-circle.component';
 import { LeaderboardDataItem } from '@shared/interfaces/leaderboard.interfaces';
 import { LeaderboardService } from '@shared/services/leaderboard.service';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { LeaderboardPositionComponent } from "./components/leaderboard-position/leaderboard-position.component";
 import { RouterLink } from '@angular/router';
 import { LeaderboardItemComponent } from './components/leaderboard-item/leaderboard-item.component';
+import { GameLevel } from '@shared/interfaces/game.interfaces';
+import { GAME } from '@shared/constants/game.constants';
 @Component({
   selector: 'app-leaderboard',
   // This is a standalone component. It does not have a module.
@@ -26,21 +28,45 @@ import { LeaderboardItemComponent } from './components/leaderboard-item/leaderbo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LeaderboardComponent {
-
-  scores: Observable<LeaderboardDataItem[]> | undefined;
+  scoreSub: Subscription|undefined;
+  scores: LeaderboardDataItem[] = []
+  filteredScores: LeaderboardDataItem[] = []
+  levels: GameLevel[] = [...GAME.LEVELS];
+  loading: boolean = true;
+  activeFilterId: number = 0;
 
   constructor(
     private leaderSrv: LeaderboardService,
     private cdr: ChangeDetectorRef
   ) {
+    // TODO: Figure out what "The Angular Way" is to handle local storage in SSR
     // After next render runs once, the next time that all components have been 
     // rendered to the DOM. We don't have access to local storage using SSR.
     // So we need to run this when localStorage becomes available.
     afterNextRender(() => {
-      this.scores = this.leaderSrv.getAllScores();
-      this.cdr.detectChanges();
+      this.scoreSub = this.leaderSrv.getAllScores().subscribe(result => {
+        this.scores = result;
+        this.filteredScores = result
+        .filter(score => score.levelId === this.activeFilterId);
+        // Show the list
+        this.loading = false;
+        this.cdr.detectChanges();
+      })
     })
   }
 
+  /**
+   * Filters the list of scores so we can filter by difficulty.
+   *
+   * @param {number} id
+   * @memberof LeaderboardComponent
+   */
+  filterList(id: number) {
+    this.activeFilterId = id;
+    this.filteredScores = this.scores.filter(score => score.levelId === id);
+  }
 
+  ngOnDestroy() {
+    this.scoreSub?.unsubscribe();
+  }
 }

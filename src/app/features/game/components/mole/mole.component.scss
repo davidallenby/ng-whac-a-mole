@@ -1,13 +1,15 @@
+@import '../../../../styles/variables';
+
 .mole {
   position: absolute;
-  bottom: -100%;
   width: 80%;
   height: 75%;
   left: 50%;
+  bottom: -100%;
   transition: .25s;
   transform: translateX(-50%);
-  background-color: chocolate;
-  will-change: transform, bottom; // Helps with CPU usage
+  background-color: $color-mole-regular;
+  will-change: bottom;
 
   &:hover {
     cursor: pointer;
@@ -18,11 +20,11 @@
   }
 
   &.mole--type-2 {
-    background-color: var(--bs-info);
+    background-color: $color-mole-super;
   }
 
   &.mole--type-3 {
-    background-color: goldenrod;
+    background-color: $color-mole-mega;
   }
 }
 

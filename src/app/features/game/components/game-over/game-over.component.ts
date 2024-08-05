@@ -44,6 +44,10 @@ export class GameOverComponent {
     }));
   }
 
+  ngOnDestroy() {
+    this.gameSrv.resetState();
+  }
+
 
   /**
    * The logic is almost identical when the buttons are clicked on the game over
@@ -54,7 +58,7 @@ export class GameOverComponent {
    * @return {*}  {void}
    * @memberof GameOverComponent
    */
-  buttonClickHandler(redirectUrl: string, updateState: boolean  = false): void {
+  buttonClickHandler(redirectUrl: string): void {
     // If the form is invalid, do nothing.
     if (this.form.invalid) { return; }
     // If the user has entered a name, save the score record before navigating
@@ -63,7 +67,7 @@ export class GameOverComponent {
       this.saveScore().subscribe();
       // If the user clicks "try again", we'll need to update the state in the
       // game service. As we'll be redirecting back to the game screen
-      if (updateState) { this.updateHighScoreState()}
+      this.updateHighScoreState()
     }
     // Navigate to the "game" screen
     this.router.navigate([redirectUrl])
@@ -82,12 +86,23 @@ export class GameOverComponent {
     return !!name;
   }
 
+  /**
+   * If the current user score is not greater than the high score in state. Then
+   * we do not need to update the highscore in state.
+   *
+   * @private
+   * @return {*}  {void}
+   * @memberof GameOverComponent
+   */
   private updateHighScoreState(): void {
     // Update the high score if required
-    const { highScore, currentScore } = this._state;
-    const hs = (currentScore > highScore) ? currentScore : highScore
+    const { currentScore } = this._state;
+    if (this.isHighest) { return; }
     // Update the current state.
-    this.gameSrv.setCurrentState({ ...this._state, highScore: hs })
+    this.gameSrv.setCurrentState({
+      ...this._state, 
+      highScore: currentScore
+    })
   }
 
   /**

@@ -32,7 +32,6 @@ export class LeaderboardService {
         const store = localStorage.getItem('ngWhacAMole');
         const allScores:LeaderboardDataItem[]= !!store ? JSON.parse(store) : []
         const sorted = allScores.sort(this.commonSrv.objectSort('score'))
-        console.log('Record count on load: ', sorted.length)
         subject.next(sorted);
         subject.complete();
       } catch (error) {

@@ -1,15 +1,31 @@
-<div class="container pt-5" *ngIf="scores | async as scores">
-  <div class="row">
+<div class="container py-5">
+  <h1 class="text-center mb-5">Leaderboard</h1>
+  <div class="text-center mb-5">
+    @for(level of levels; track level.levelId) {
+      <button type="button"
+        class="btn mx-2 my-2 btn-lg"
+        [ngClass]="{
+          'btn-primary': level.levelId === activeFilterId,
+          'btn-secondary': level.levelId !== activeFilterId
+        }"
+        (click)="filterList(level.levelId)"
+      >
+        <span>{{ level.levelName }}</span>
+      </button>
+    }
+  </div>
+  <div class="row" *ngIf="!loading">
     <div class="col-12 col-md-9 col-lg-8 mx-auto">
-      <h1 class="text-center mb-4">Leaderboard</h1>
-      <ng-container *ngIf="!!scores.length; else empty">
+      <ng-container *ngIf="!!filteredScores.length; else emptyFilter">
         @for (item of scores; track item; let i = $index) {
           <app-leaderboard-item [index]="i" [item]="item" />
         }
       </ng-container>
-      <ng-template #empty>
+
+
+      <ng-template #emptyFilter>
         <p class="lead text-center">
-          <span>No results yet! </span>
+          <span>No results for this level! </span>
           <a routerLink="/game">Play a game</a>
           <span> and record your result to begin.</span>
         </p>

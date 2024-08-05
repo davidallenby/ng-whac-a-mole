@@ -4,26 +4,30 @@ export namespace GAME {
   // Game difficulty settings.
   export const LEVELS: GameLevel[] = [
     {
-      // 0 == Easy
-      // 1 == Medium
-      // 2 == Hard
       levelId: 0,
       levelName: 'Easy 😎',
       // How long/short the mole will appear for
-      minVisibility: 700,
-      maxVisibility: 1000
+      minVisibility: 1000,
+      maxVisibility: 1500,
+      // How long between mole mole appearance
+      minDelay: 1000,
+      maxDelay: 2000
     },
     {
       levelId: 1,
       levelName: 'Medium 😧',
-      minVisibility: 500,
-      maxVisibility: 800
+      minVisibility: 750,
+      maxVisibility: 1250,
+      minDelay: 750,
+      maxDelay: 1500
     },
     {
       levelId: 2,
       levelName: 'Hard 🤯',
-      minVisibility: 450,
-      maxVisibility: 750
+      minVisibility: 500,
+      maxVisibility: 1000,
+      minDelay: 500,
+      maxDelay: 1000
     }
   ]
 
@@ -32,9 +36,9 @@ export namespace GAME {
 
   // Types of characters that appear in the game.
   // Define probability ranges:
-  // -- 5% chance of getting super mole (+1 point when clicked)
-  // -- 15% chance of getting mega mole (+2 points when clicked)
-  // -- 80% chance of getting regular mole (+3 points when clicked)
+  // -- 82% chance of getting regular mole (+1 points when clicked)
+  // -- 13% chance of getting mega mole (+2 points when clicked)
+  // -- 5% chance of getting super mole (+3 point when clicked)
   export const MOLE_TYPES: MoleType[] = [
     {
       moleTypeId: 1,

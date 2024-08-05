@@ -8,6 +8,9 @@ export interface GameLevel {
   // Time the mole stays visible for
   minVisibility: number;
   maxVisibility: number;
+  // How long between the moles hiding and showing
+  minDelay: number;
+  maxDelay: number;
 }
 
 export interface MoleType {

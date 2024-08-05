@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ActiveMoleConfig } from '@features/game/game.interfaces';
 import { GameService } from '@features/game/services/game.service';
 import { GAME } from '@shared/constants/game.constants';
 import { GameState } from '@shared/interfaces/game.interfaces';
@@ -11,49 +12,49 @@ import { Subscription } from 'rxjs';
 })
 export class MoleComponent {
   @Input()index: number = 0;
-
   show: boolean = false;
   // Mole attributes
   moleTypeId: number = 1;
   // Current state
-  private _inProgress: boolean = false;
   private _state: GameState = GAME.DEFAULT_STATE;
+  // Active config
+  private _config: ActiveMoleConfig|null = null
 
   subs: Subscription[] = []
   clicked: boolean = false;
-
-  private timer: ReturnType<typeof setInterval> | undefined
+  
+  private visbilityTimer: ReturnType<typeof setInterval> | undefined
 
   constructor(
     private gameSrv: GameService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
+    // Get the current game state
     const state = this.gameSrv.getCurrentState().subscribe(state => {
-      this._inProgress = state.inProgress;
       this._state = state;
-      return state.inProgress;
+      if (!state.inProgress) {
+        clearTimeout(this.visbilityTimer);
+        this.show = false;
+      }
     });
     this.subs.push(state)
 
-    // Subscribe to the active mole index changes.
-    const activeIndex = this.gameSrv.getActiveMoleIndex().subscribe(i => {
-      // If the active index matches this mole, pop up the mole
-      this.show = (this._inProgress && i === this.index);
-      // We won't generate the next mole if this mole index doesn't match
-      if (!this.show) { return; }
-      // Generate a new mole type ID if we're showing this mole
-      this.moleTypeId = this.gameSrv.getNewMoleTypeId();
-      // Now that we're showing our randomly generated mole character. We want
-      // to initiate a countdown to auto hide the mole. If the user clicks
-      // the mole within this lifespan. We'll clear the setInterval so that
-      // we don't try to auto hide the mole when we've manually processed the
-      // logic on click event
-      this.initMoleLifespan();
-      return i;
-    });
-    this.subs.push(activeIndex)
+    // Subscribe to the active mole configuration changes
+    const activeMole = this.gameSrv.getActiveMoleConfig().subscribe(config => {
+      this._config = config;
+      // Whether to show/hide this mole
+      this.show = (this._state.inProgress && config.id === this.index)
+      // If no config returns that means the game is not in progress
+      // If we're not showing this mole, clear the timer
+      if (!config || !this.show) {
+        clearTimeout(this.visbilityTimer);
+      } else {
+        this.moleTypeId = config.typeId;
+        this.initMoleLifespan(config);
+      }
+    })
+    this.subs.push(activeMole);
   }
 
   /**
@@ -63,7 +64,7 @@ export class MoleComponent {
    * @memberof MoleComponent
    */
   ngOnDestroy() {
-    clearTimeout(this.timer)
+    clearTimeout(this.visbilityTimer)
     this.subs.forEach(sub => sub.unsubscribe())
   }
 
@@ -75,53 +76,53 @@ export class MoleComponent {
    * @memberof MoleComponent
    */
   onMoleClick(): void {
-    // Prevent getting extra points for additional clicks or, If the user clicks 
+    // Prevent getting extra points for additional clicks or, if the user clicks 
     // this mole while it's hiding. Will prevent the new mole generation logic
     // from running again too.
-    if (this.clicked || !this.show) {return;}
+    if (this.clicked || !this.show) { return; }
     // Set the mole guard to true
     this.clicked = true;
     // Prevent the auto-hide logic from running
-    clearTimeout(this.timer);
+    clearTimeout(this.visbilityTimer);
     // Hide the mole (since it was clicked)
     this.show = false;
-    // Get the current score value
-    let currentScore = this._state.currentScore + this.moleTypeId;
-    // Increment the score by 1 (notify other components)
-    this.gameSrv.setCurrentState({ ...this._state, currentScore });
-    // Give the hide animation a chance to complete before running the next
-    // mole generation
-    setTimeout(() => {
-      // Remove the click guard
-      this.clicked = false;
-      // Generate the next mole
-      this.generateNextMoleIndex();
-    }, 250)
+    // Increment the score value by however many points this click is worth
+    this.gameSrv.setCurrentState({ 
+      ...this._state,
+      currentScore: this.getUpdatedScore()
+    });
+    // Remove the click guard
+    this.clicked = false;
+    // Generate the next mole
+    this.gameSrv.setNewActiveMoleConfig();
   }
 
   /**
-   * Generate the next mole index to appear and tell the other components to
-   * update
+   * This function generates the new value for display on the score board. 
+   * We take the current score stored in state, and add however many points this
+   * click is worth. Number of points is based on the type of mole.
    *
+   * @private
+   * @return {*}  {number}
    * @memberof MoleComponent
    */
-  private generateNextMoleIndex(): void {
-    const newMoleIndex = this.gameSrv.getRandomMoleIndex();
-    this.gameSrv.setActiveMoleIndex(newMoleIndex)
+  private getUpdatedScore(): number {
+    return this._state.currentScore + (this._config ? this._config.typeId : 0);
   }
 
   /**
    * If the user doesn't click the mole within the visibility window. This
-   * function will hide the mole and generate the next mole index
+   * function will hide the mole and generate the next mole config.
    *
    * @memberof MoleComponent
    */
-  private initMoleLifespan(): void {
-    const visibility = this.gameSrv.getRandomVisibility();
-    this.timer = setTimeout(() => {
+  private initMoleLifespan(config: ActiveMoleConfig): void {
+    this.visbilityTimer = setTimeout(() => {
+      // Hide the mole and 
       this.clicked = false;
       this.show = false;
-      this.generateNextMoleIndex();
-    }, visibility)
+      // Generates a new mole configuration and updates the subject
+      this.gameSrv.setNewActiveMoleConfig();
+    }, config.visibility)
   }
 }

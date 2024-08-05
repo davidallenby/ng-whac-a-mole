@@ -5,7 +5,8 @@ import { CommonService } from '@shared/services/common.service'
 import { GameModule } from '../game.module'
 import { Router } from '@angular/router'
 import { LeaderboardService } from '@shared/services/leaderboard.service'
-import { GameState } from '@shared/interfaces/game.interfaces'
+import { GameLevel, GameState } from '@shared/interfaces/game.interfaces'
+import { ActiveMoleConfig } from '../game.interfaces'
 
 @Injectable({
   providedIn: GameModule
@@ -21,10 +22,16 @@ export class GameService {
   private timeLeft: BehaviorSubject<number> = new BehaviorSubject(
     GAME.TIME_LIMIT
   )
-  private activeMole: BehaviorSubject<number> = new BehaviorSubject(0);
 
   private gameState: BehaviorSubject<GameState> =
     new BehaviorSubject(GAME.DEFAULT_STATE)
+
+  private activeMoleConfig: BehaviorSubject<ActiveMoleConfig> =
+    new BehaviorSubject<ActiveMoleConfig>({
+      id: 0,
+      visibility: 0,
+      typeId: 0
+    });
 
   constructor(
     private commonSrv: CommonService,
@@ -46,10 +53,7 @@ export class GameService {
     afterNextRender(() => {
       this.leaderSrv.getHighScore().subscribe(hs => {
         const current = this.gameState.getValue();
-        this.setCurrentState({
-          ...current,
-          highScore: hs
-        })
+        this.setCurrentState({ ...current, highScore: hs })
       })
     })
   }
@@ -75,20 +79,6 @@ export class GameService {
   }
 
   /**
-   * Get/Set the currently active mole index. Updates the state so we know which
-   * mole is supposed to appear
-   *
-   * @return {*}  {Observable<number>}
-   * @memberof GameService
-   */
-  getActiveMoleIndex(): Observable<number> {
-    return this.activeMole.asObservable();
-  }
-  setActiveMoleIndex(index: number): void {
-    this.activeMole.next(index)
-  }
-
-  /**
    * Function that starts the timer, and notifies the other components to start
    * animating
    *
@@ -107,9 +97,8 @@ export class GameService {
     // Reset the timer to 30 seconds
     let count = GAME.TIME_LIMIT
     this.setTime(count)
-    const i = this.getRandomMoleIndex();
-    this.setActiveMoleIndex(i);
-
+    // Generate and set new active mole config
+    this.setNewActiveMoleConfig();
     // Start the timer
     this.timer = setInterval(() => {
       // Reduce the time left
@@ -117,9 +106,7 @@ export class GameService {
       // Update the observable that's listening
       this.setTime(count)
       // If the count is 0, stop the game
-      if (count <= 0) {
-        this.endGame();
-      }
+      if (count <= 0) { this.endGame(); }
     }, 1000)
   }
 
@@ -144,6 +131,7 @@ export class GameService {
     clearInterval(this.timer)
     const state = this.gameState.getValue();
     this.setCurrentState({ ...state, inProgress: false })
+    // Unblock the game over screen from being visible
     this._gameOver.set(true);
     this.router.navigate(['/game/game-over'])
   }
@@ -161,10 +149,10 @@ export class GameService {
       currentScore: 0,
       inProgress: false
     })
-    
+    // Reset the clock to the time limit
     this.setTime(GAME.TIME_LIMIT);
     clearInterval(this.timer)
-    this._gameOver.set(true);
+    this._gameOver.set(false);
   }
 
   /**
@@ -176,17 +164,23 @@ export class GameService {
    */
   getRandomVisibility(): number {
     // get the current state
-    const state = this.gameState.getValue();
-    // We need to fetch the visibility settings from the settings object. Fall
-    // back to easy mode if not found.
-    const found = GAME.LEVELS.find(item => item.levelId === state.levelId) ??
-    GAME.LEVELS[0];
-    // Set the min/max visibility for a mole
-    const max = found.maxVisibility;
-    const min = found.minVisibility;
+    const config = this.getCurrentLevelConfig();
     // Get a random number and return
-    const value = this.getRandomIntegerInRange(min, max);
-    return Math.round(value)
+    return this
+    .getRandomIntegerInRange(config.minVisibility, config.maxVisibility)
+  }
+
+  /**
+   * Based on the level difficulty - this function will generate a time in
+   * miliseconds that will delay between hiding the last mole, and generating
+   * the next one
+   *
+   * @return {*}  {number}
+   * @memberof GameService
+   */
+  getRandomDelayValue(): number {
+    const config = this.getCurrentLevelConfig();
+    return this.getRandomIntegerInRange(config.minDelay, config.maxDelay)
   }
 
   /**
@@ -200,7 +194,7 @@ export class GameService {
    * @memberof GameService
    */
   private getRandomIntegerInRange(min: number, max: number): number {
-    return (Math.random() * (max - min) + min * 1);
+    return Math.round((Math.random() * (max - min) + min * 1));
   }
 
   /**
@@ -244,5 +238,41 @@ export class GameService {
 
   setCurrentState(state: GameState): void {
     this.gameState.next(state);
+  }
+
+  getActiveMoleConfig(): Observable<ActiveMoleConfig> {
+    return this.activeMoleConfig.asObservable();
+  }
+
+  /**
+   * Generates, and sets a new configuration for the next active mole.
+   *
+   * @memberof GameService
+   */
+  setNewActiveMoleConfig(): void {
+    const newConfig = this.generateNewActiveMoleConfig();
+    setTimeout(() => {
+      this.activeMoleConfig.next(newConfig)
+    }, this.getRandomDelayValue())
+    // Random delay value will create delay between showing the next mole
+  }
+
+  private generateNewActiveMoleConfig(): ActiveMoleConfig {
+    return {
+      id: this.getRandomMoleIndex(),
+      typeId: this.getNewMoleTypeId(),
+      visibility: this.getRandomVisibility()
+    }
+  }
+  /**
+   * Based on the level ID stored in state, return the full configuration object
+   *
+   * @private
+   * @return {*}  {GameLevel}
+   * @memberof GameService
+   */
+  private getCurrentLevelConfig(): GameLevel {
+    const { levelId } = this.gameState.getValue();
+    return GAME.LEVELS[levelId];
   }
 }
