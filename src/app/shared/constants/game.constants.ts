@@ -56,8 +56,7 @@ export namespace GAME {
   export const DEFAULT_STATE: GameState = {
     currentScore: 0,
     highScore: 0,
-    levelId: 0,
-    inProgress: false,
-    gameOver: false
+    levelId: 0, 
+    inProgress: false
   }
 }
