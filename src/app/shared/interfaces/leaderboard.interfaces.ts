@@ -4,3 +4,7 @@ export interface LeaderboardDataItem {
   score: number;
   dateCreated: string;
 }
+
+export interface LeaderboardScoreGroup {
+  [levelId: number]: LeaderboardDataItem[]
+}

@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
 import { LeaderboardItemComponent } from './components/leaderboard-item/leaderboard-item.component';
 import { GameLevel } from '@shared/interfaces/game.interfaces';
 import { GAME } from '@shared/constants/game.constants';
-import { DifficultySelectComponent } from "../../shared/components/difficulty-select/difficulty-select.component";
+import { DifficultySelectComponent } from "@shared/components/difficulty-select/difficulty-select.component";
 @Component({
   selector: 'app-leaderboard',
   // This is a standalone component. It does not have a module.

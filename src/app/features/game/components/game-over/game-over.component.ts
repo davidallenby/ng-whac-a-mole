@@ -63,6 +63,7 @@ export class GameOverComponent {
     if (this.form.invalid) { return; }
     // If the user has entered a name, save the score record before navigating
     if (this.isNameEntered()) {
+      console.log('NAME IS ENTERED')
       // Run the save score function. "saveScore" will only run this code once
       this.saveScore().subscribe();
       // If the user clicks "try again", we'll need to update the state in the
