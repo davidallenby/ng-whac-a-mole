@@ -10,7 +10,7 @@ import { map, Observable } from 'rxjs';
 export class GameBoardComponent {
   moles: number[] = this.setMoleCount(9)
   showStartBtn: Observable<boolean> | undefined;
-
+  inProgress: boolean = false;
   constructor(
     private gameSrv: GameService
   ) {
@@ -19,6 +19,7 @@ export class GameBoardComponent {
   ngOnInit(){
     this.gameSrv.resetState(); // Reset the default state when the board laods
     this.showStartBtn = this.gameSrv.getCurrentState().pipe(map(state => {
+      this.inProgress = state.inProgress
       // Only show the start button if the game is NOT in progress
       return !state.inProgress;
     }))
@@ -49,5 +50,12 @@ export class GameBoardComponent {
    */
   startGame(): void {
     this.gameSrv.startGame();
+  }
+
+  playSwoosh(): void {
+    if (!this.inProgress) { return; }
+    const audio = new Audio('sound/swoosh.mp3')
+    audio.load();
+    audio.play();
   }
 }

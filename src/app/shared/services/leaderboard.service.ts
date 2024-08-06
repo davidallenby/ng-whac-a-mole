@@ -48,16 +48,13 @@ export class LeaderboardService {
    * @memberof LeaderboardService
    */
   getHighScore(levelId: number): Observable<number> {
-    console.log('New level ID: ', levelId)
     // Get the scores from localStorage
     return this.getAllScores().pipe(map(data => {
-      console.log(data)
       // If there's no records yet, return 0
       if (!data.length) { return 0; }
       // If there are records, return the score in the first one. Because the
       // data is sorted by score before returning all scores.
       const filtered = data.filter((score) => score.levelId === levelId)
-      console.log(filtered)
       // If there's no data for the provided level ID, return 0
       return filtered && filtered[0] ? filtered[0].score : 0; 
     }));

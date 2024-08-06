@@ -1,5 +1,5 @@
 <div class="game-board">
-  <div class="game-board__inner mb-4">
+  <div class="game-board__inner mb-4" (click)="playSwoosh()">
     <div class="hole" *ngFor="let i of moles;">
       <app-mole [index]="i" />
     </div>

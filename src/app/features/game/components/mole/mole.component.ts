@@ -75,7 +75,11 @@ export class MoleComponent {
    * @return {*}  {void}
    * @memberof MoleComponent
    */
-  onMoleClick(): void {
+  onMoleClick(event: Event): void {
+    // Prevent event propagation - Don't want the "swoosh" sound to play
+    event.stopImmediatePropagation();
+    // Play the bonk sound as this was a "hit"
+    this.playSound();
     // Prevent getting extra points for additional clicks or, if the user clicks 
     // this mole while it's hiding. Will prevent the new mole generation logic
     // from running again too.
@@ -95,6 +99,12 @@ export class MoleComponent {
     this.clicked = false;
     // Generate the next mole
     this.gameSrv.setNewActiveMoleConfig();
+  }
+
+  private playSound(): void {
+    const audio = new Audio('sound/bonk.mp3');
+    audio.load();
+    audio.play();
   }
 
   /**
