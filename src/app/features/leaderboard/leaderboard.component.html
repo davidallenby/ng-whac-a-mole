@@ -1,19 +1,8 @@
 <div class="container py-5">
   <h1 class="text-center mb-5">Leaderboard</h1>
-  <div class="text-center mb-5">
-    @for(level of levels; track level.levelId) {
-      <button type="button"
-        class="btn mx-2 my-2 btn-lg"
-        [ngClass]="{
-          'btn-primary': level.levelId === activeFilterId,
-          'btn-secondary': level.levelId !== activeFilterId
-        }"
-        (click)="filterList(level.levelId)"
-      >
-        <span>{{ level.levelName }}</span>
-      </button>
-    }
-  </div>
+  <app-difficulty-select class="mb-5" [activeId]="activeFilterId"
+    (levelClick)="filterClickHandler($event)"
+  />
   <div class="row" *ngIf="!loading">
     <div class="col-12 col-md-9 col-lg-8 mx-auto">
       <ng-container *ngIf="!!filteredScores.length; else emptyFilter">

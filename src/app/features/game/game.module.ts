@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { GameComponent } from './game.component';
 import { Route, RouterModule } from '@angular/router';
 import { GameHeaderComponent } from "./components/game-header/game-header.component";
-import { GameSettingsSelectorComponent } from './components/game-settings-selector/game-settings-selector.component';
 import { GameBoardComponent } from './components/game-board/game-board.component';
 import { MoleComponent } from './components/mole/mole.component';
 import { GameService } from './services/game.service';
@@ -12,6 +11,7 @@ import { GameScreenLayoutComponent } from './components/game-screen-layout/game-
 import { GameOverGuard } from './guards/game-over.guard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ScoreCircleComponent } from "../../shared/components/score-circle/score-circle.component";
+import { DifficultySelectComponent } from "../../shared/components/difficulty-select/difficulty-select.component";
 
 const gameRoutes:Route[] = [
   {
@@ -40,7 +40,6 @@ const gameRoutes:Route[] = [
   declarations: [
     GameComponent,
     GameHeaderComponent,
-    GameSettingsSelectorComponent,
     GameBoardComponent,
     MoleComponent,
     GameScreenLayoutComponent,
@@ -50,8 +49,9 @@ const gameRoutes:Route[] = [
     CommonModule,
     RouterModule.forChild(gameRoutes),
     ReactiveFormsModule,
-    ScoreCircleComponent
-  ],
+    ScoreCircleComponent,
+    DifficultySelectComponent
+],
   providers: [
     GameService,
     GameOverGuard

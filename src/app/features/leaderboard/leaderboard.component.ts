@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { LeaderboardItemComponent } from './components/leaderboard-item/leaderboard-item.component';
 import { GameLevel } from '@shared/interfaces/game.interfaces';
 import { GAME } from '@shared/constants/game.constants';
+import { DifficultySelectComponent } from "../../shared/components/difficulty-select/difficulty-select.component";
 @Component({
   selector: 'app-leaderboard',
   // This is a standalone component. It does not have a module.
@@ -21,8 +22,9 @@ import { GAME } from '@shared/constants/game.constants';
     NgClass,
     RouterLink,
     LeaderboardPositionComponent,
-    LeaderboardItemComponent
-  ],
+    LeaderboardItemComponent,
+    DifficultySelectComponent
+],
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -54,16 +56,15 @@ export class LeaderboardComponent {
       })
     })
   }
-
   /**
    * Filters the list of scores so we can filter by difficulty.
    *
-   * @param {number} id
+   * @param {number} levelId
    * @memberof LeaderboardComponent
    */
-  filterList(id: number) {
-    this.activeFilterId = id;
-    this.filteredScores = this.scores.filter(score => score.levelId === id);
+  filterClickHandler(levelId: number): void {
+    this.activeFilterId = levelId;
+    this.filteredScores = this.scores.filter(score => score.levelId === levelId)
   }
 
   ngOnDestroy() {

@@ -251,10 +251,10 @@ export class GameService {
    */
   setNewActiveMoleConfig(): void {
     const newConfig = this.generateNewActiveMoleConfig();
-    setTimeout(() => {
-      this.activeMoleConfig.next(newConfig)
-    }, this.getRandomDelayValue())
     // Random delay value will create delay between showing the next mole
+    setTimeout(() => this.activeMoleConfig.next(newConfig), 
+    this.getRandomDelayValue())
+    
   }
 
   private generateNewActiveMoleConfig(): ActiveMoleConfig {

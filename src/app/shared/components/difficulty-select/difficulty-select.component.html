@@ -1,9 +1,9 @@
-<div class="text-center{{ class ? ' ' + class : ''}}" *ngIf="state | async as state">
+<div class="text-center{{ class ? ' ' + class : ''}}">
   @for (item of options; track item.levelId) {
     <button 
       type="button"
-      (click)="setDifficulty(item.levelId)"
-      [disabled]="state.inProgress"
+      (click)="clickHandler(item.levelId)"
+      [disabled]="disabled"
       class="btn btn-lg mx-1 mx-sm-3 my-2 {{ item.active ? 'btn-primary' : 'btn-secondary'}}"
     >{{ item.label }}</button>
   }

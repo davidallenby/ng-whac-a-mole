@@ -1,4 +1,8 @@
 <div class="container py-5">
-  <app-game-settings-selector class="mb-5" />
+  <app-difficulty-select class="mb-5"
+    *ngIf="state | async as state"
+    [activeId]="state.levelId"
+    (levelClick)="setDifficultyInState($event)"
+  />
   <app-game-board />
 </div>
