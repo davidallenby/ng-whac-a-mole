@@ -6,7 +6,7 @@
   <div class="row" *ngIf="!loading">
     <div class="col-12 col-md-9 col-lg-8 mx-auto">
       <ng-container *ngIf="!!filteredScores.length; else emptyFilter">
-        @for (item of filteredScores; track item; let i = $index) {
+        @for (item of filteredScores; track item.dateCreated; let i = $index;) {
           <app-leaderboard-item [index]="i" [item]="item" />
         }
       </ng-container>
