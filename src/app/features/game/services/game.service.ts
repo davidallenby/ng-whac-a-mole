@@ -236,6 +236,10 @@ export class GameService {
     return this.gameState.asObservable();    
   }
 
+  get stateValue(): GameState {
+    return this.gameState.getValue();
+  }
+
   setCurrentState(state: GameState): void {
     this.gameState.next(state);
   }

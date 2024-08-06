@@ -15,7 +15,9 @@
       <ng-template #emptyFilter>
         <p class="lead text-center">
           <span>No results for this level! </span>
-          <a routerLink="/game">Play a game</a>
+          <a [routerLink]="['/game']" 
+            [queryParams]="{levelId: activeFilterId}"
+          >Play a game</a>
           <span> and record your result to begin.</span>
         </p>
       </ng-template>
