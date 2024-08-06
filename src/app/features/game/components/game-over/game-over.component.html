@@ -10,7 +10,7 @@
 
       <ng-container *ngIf="!!state.currentScore">
         <p *ngIf="isHighest">Congratulations! You got the highest score.</p>
-        <p *ngIf="!isHighest">Not bad, but the high score is: <strong>{{ state.highScore }}</strong>.<br />Try again, and see if you can beat it.</p>
+        <p *ngIf="!isHighest">Not bad, but the high score is: <strong>{{ highScore }}</strong>.<br />Try again, and see if you can beat it.</p>
         <label class="d-block mb-1">Enter your name below to save your score:</label>
         <form [formGroup]="form">
           <input type="text" 

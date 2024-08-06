@@ -29,17 +29,21 @@ export class GameOverComponent {
   _state: GameState = GAME.DEFAULT_STATE;
   isHighest: boolean = false;
 
+  highScore: number = 0;
+
   constructor(
     private gameSrv: GameService,
     private leaderSrv: LeaderboardService,
     private router: Router
   ) {
+    // Get signal value
+    this.highScore = this.gameSrv.highScore;
   }
 
   ngOnInit() {
     this.state = this.gameSrv.getCurrentState().pipe(map(data => {
       this._state = data;
-      this.isHighest = (data.currentScore > data.highScore)
+      this.isHighest = (data.currentScore > this.gameSrv.highScore)
       return data;
     }));
   }
@@ -63,7 +67,6 @@ export class GameOverComponent {
     if (this.form.invalid) { return; }
     // If the user has entered a name, save the score record before navigating
     if (this.isNameEntered()) {
-      console.log('NAME IS ENTERED')
       // Run the save score function. "saveScore" will only run this code once
       this.saveScore().subscribe();
       // If the user clicks "try again", we'll need to update the state in the
@@ -100,10 +103,7 @@ export class GameOverComponent {
     const { currentScore } = this._state;
     if (this.isHighest) { return; }
     // Update the current state.
-    this.gameSrv.setCurrentState({
-      ...this._state, 
-      highScore: currentScore
-    })
+    this.gameSrv.highScoreSignal.set(currentScore)
   }
 
   /**

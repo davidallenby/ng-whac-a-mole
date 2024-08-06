@@ -17,15 +17,22 @@ export class GameService {
   get gameOver() {
     return this._gameOver();
   }
+  // Signal for the highscore - Will change depending on which difficulty is
+  // selected
+  highScoreSignal = signal(0);
+  get highScore() {
+    return this.highScoreSignal();
+  }
+
   // Timer for the current game time
   private timer: ReturnType<typeof setInterval> | undefined
   private timeLeft: BehaviorSubject<number> = new BehaviorSubject(
     GAME.TIME_LIMIT
   )
-
+  // Current game state
   private gameState: BehaviorSubject<GameState> =
     new BehaviorSubject(GAME.DEFAULT_STATE)
-
+  // The current active mole configuration
   private activeMoleConfig: BehaviorSubject<ActiveMoleConfig> =
     new BehaviorSubject<ActiveMoleConfig>({
       id: 0,
@@ -39,7 +46,7 @@ export class GameService {
     private router: Router
   ) {
     // Get the current high score and set it in state.
-    this.fetchAndSetHighScoreInState();
+    this.fetchAndSetHighScore();
   }
 
   /**
@@ -49,12 +56,12 @@ export class GameService {
    * @private
    * @memberof GameService
    */
-  private fetchAndSetHighScoreInState(): void {
+  private fetchAndSetHighScore(): void {
+    const current = this.stateValue;
     afterNextRender(() => {
-      this.leaderSrv.getHighScore().subscribe(hs => {
-        const current = this.gameState.getValue();
-        this.setCurrentState({ ...current, highScore: hs })
-      })
+      this.leaderSrv.getHighScore(current.levelId).subscribe(hs => {
+        this.highScoreSignal.set(hs); // Set the high score signal
+      }).unsubscribe();
     })
   }
 
@@ -86,9 +93,9 @@ export class GameService {
    */
   startGame (): void {
     clearInterval(this.timer)
-    const state = this.gameState.getValue();
     this.setCurrentState({
-      ...state,
+      // Current state
+      ...this.stateValue,
       // Reset the score to 0
       currentScore: 0,
       // Tell the game that the timer has started
@@ -117,7 +124,7 @@ export class GameService {
    * @memberof GameService
    */
   getRandomMoleIndex(): number {
-    const decimal = +(this.getRandomIntegerInRange(0, 8).toFixed(1));
+    const decimal = +(this.commonSrv.getRandomIntegerInRange(0, 8).toFixed(1))
     return Math.floor(decimal);
   }
 
@@ -129,8 +136,7 @@ export class GameService {
    */
   private endGame(): void {
     clearInterval(this.timer)
-    const state = this.gameState.getValue();
-    this.setCurrentState({ ...state, inProgress: false })
+    this.setCurrentState({ ...this.stateValue, inProgress: false })
     // Unblock the game over screen from being visible
     this._gameOver.set(true);
     this.router.navigate(['/game/game-over'])
@@ -143,9 +149,8 @@ export class GameService {
    * @memberof GameService
    */
   resetState(): void {
-    const current = this.gameState.getValue();
     this.setCurrentState({
-      ...current,
+      ...this.stateValue,
       currentScore: 0,
       inProgress: false
     })
@@ -166,7 +171,7 @@ export class GameService {
     // get the current state
     const config = this.getCurrentLevelConfig();
     // Get a random number and return
-    return this
+    return this.commonSrv
     .getRandomIntegerInRange(config.minVisibility, config.maxVisibility)
   }
 
@@ -180,21 +185,8 @@ export class GameService {
    */
   getRandomDelayValue(): number {
     const config = this.getCurrentLevelConfig();
-    return this.getRandomIntegerInRange(config.minDelay, config.maxDelay)
-  }
-
-  /**
-   * Required for generating active mole index, new mole type ID, and the length
-   * of time the mole is active.
-   *
-   * @private
-   * @param {number} min
-   * @param {number} max
-   * @return {*}  {number}
-   * @memberof GameService
-   */
-  private getRandomIntegerInRange(min: number, max: number): number {
-    return Math.round((Math.random() * (max - min) + min * 1));
+    return this.commonSrv
+    .getRandomIntegerInRange(config.minDelay, config.maxDelay)
   }
 
   /**
@@ -236,16 +228,22 @@ export class GameService {
     return this.gameState.asObservable();    
   }
 
-  get stateValue(): GameState {
-    return this.gameState.getValue();
-  }
-
+  /**
+   * Current game state
+   *
+   * @param {GameState} state
+   * @memberof GameService
+   */
   setCurrentState(state: GameState): void {
     this.gameState.next(state);
   }
 
   getActiveMoleConfig(): Observable<ActiveMoleConfig> {
     return this.activeMoleConfig.asObservable();
+  }
+  // Get the value of the current state
+  get stateValue(): GameState {
+    return this.gameState.getValue();
   }
 
   /**
@@ -276,7 +274,7 @@ export class GameService {
    * @memberof GameService
    */
   private getCurrentLevelConfig(): GameLevel {
-    const { levelId } = this.gameState.getValue();
+    const { levelId } = this.stateValue;
     return GAME.LEVELS[levelId];
   }
 }

@@ -22,6 +22,5 @@ export interface MoleType {
 export interface GameState {
   levelId: number; // Current difficulty level
   currentScore: number;
-  highScore: number;
   inProgress: boolean; // Hide start button, disable difficulty settings
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { GameService } from '@features/game/services/game.service';
 import { GameState } from '@shared/interfaces/game.interfaces';
 import { Observable } from 'rxjs';
@@ -12,10 +12,14 @@ export class GameHeaderComponent {
   time: Observable<number>|undefined;
   state: Observable<GameState>|undefined;
 
+  highScore: number = 0;
+
   constructor(
     private gameSrv: GameService,
   ) {
-    
+    effect(() => {
+      this.highScore = this.gameSrv.highScore;
+    })
   }
 
   ngOnInit() {

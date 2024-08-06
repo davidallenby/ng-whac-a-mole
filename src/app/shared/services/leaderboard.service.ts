@@ -47,10 +47,19 @@ export class LeaderboardService {
    * @return {*}  {Observable<number>}
    * @memberof LeaderboardService
    */
-  getHighScore(): Observable<number> {
+  getHighScore(levelId: number): Observable<number> {
+    console.log('New level ID: ', levelId)
+    // Get the scores from localStorage
     return this.getAllScores().pipe(map(data => {
+      console.log(data)
+      // If there's no records yet, return 0
       if (!data.length) { return 0; }
-      return data[0].score
+      // If there are records, return the score in the first one. Because the
+      // data is sorted by score before returning all scores.
+      const filtered = data.filter((score) => score.levelId === levelId)
+      console.log(filtered)
+      // If there's no data for the provided level ID, return 0
+      return filtered && filtered[0] ? filtered[0].score : 0; 
     }));
   }
 
@@ -70,7 +79,7 @@ export class LeaderboardService {
       const newData = this.addNewScoreToLeaderboardData(payload, data)
       // Stringify the new data and add to local storage
       localStorage.setItem('ngWhacAMole', JSON.stringify(newData));
-      return this.getHighScore();  
+      return this.getHighScore(payload.levelId);  
     }))
   }
 

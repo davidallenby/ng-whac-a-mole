@@ -46,4 +46,17 @@ export class CommonService {
       return result * sortOrder;
     };
   }
+
+  /**
+   * Returns a random integer within a min/max range
+   *
+   * @private
+   * @param {number} min
+   * @param {number} max
+   * @return {*}  {number}
+   * @memberof GameService
+   */
+  getRandomIntegerInRange(min: number, max: number): number {
+    return Math.round((Math.random() * (max - min) + min * 1));
+  }  
 }
