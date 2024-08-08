@@ -102,9 +102,9 @@ export class MoleComponent {
   }
 
   private playSound(): void {
-    const audio = new Audio('sound/bonk.mp3');
-    audio.load();
-    audio.play();
+    // const audio = new Audio('sound/bonk.mp3');
+    // audio.load();
+    // audio.play();
   }
 
   /**

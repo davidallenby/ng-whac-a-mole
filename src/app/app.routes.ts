@@ -21,7 +21,7 @@ export const routes: Routes = [
   {
     path: 'game',
     loadChildren: () => import('@features/game/game.module').then((m) => {
-      return m.GameModule;;
+      return m.GameModule;
     })
   }
 ];

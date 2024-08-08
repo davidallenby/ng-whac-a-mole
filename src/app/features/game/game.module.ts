@@ -51,11 +51,10 @@ const gameRoutes:Route[] = [
     ReactiveFormsModule,
     ScoreCircleComponent,
     DifficultySelectComponent
-],
+  ],
   providers: [
     GameService,
     GameOverGuard
-  ],
-  exports: [RouterModule]
+  ]
 })
 export class GameModule { }

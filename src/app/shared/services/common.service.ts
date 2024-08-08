@@ -18,7 +18,7 @@ export class CommonService {
    * @param descending 
    * @returns 
    */
-  objectSort (key: string, ascending: boolean = false): any {
+  objectSort(key: string, ascending: boolean = false) {
     // Set the sort order based on the dev preference
     const sortOrder = (ascending) ? 1 : -1;
     // Split the property chain into an array.
@@ -26,7 +26,7 @@ export class CommonService {
     // Get the length of the array, so we can iterate over later.
     const len = properties.length;
     // Sort function
-    return function (a: any, b: any) {
+    return function (a: any, b: any): number {
       let i = 0;
       // Store the parent objects here
       let compareA = a;

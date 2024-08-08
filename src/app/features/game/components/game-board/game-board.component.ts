@@ -52,10 +52,10 @@ export class GameBoardComponent {
     this.gameSrv.startGame();
   }
 
-  playSwoosh(): void {
-    if (!this.inProgress) { return; }
-    const audio = new Audio('sound/swoosh.mp3')
-    audio.load();
-    audio.play();
-  }
+  // playSwoosh(): void {
+  //   if (!this.inProgress) { return; }
+  //   const audio = new Audio('sound/swoosh.mp3')
+  //   audio.load();
+  //   audio.play();
+  // }
 }
