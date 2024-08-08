@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { GameService } from './services/game.service';
 import { ActivatedRoute } from '@angular/router';
 import { GAME } from '@shared/constants/game.constants';
@@ -6,13 +6,13 @@ import { GAME } from '@shared/constants/game.constants';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrl: './game.component.scss'
+  styleUrls: ['./game.component.scss']
 })
 export class GameComponent {
-  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
   constructor(
-    private gameSrv: GameService
+    private gameSrv: GameService,
+    private activatedRoute: ActivatedRoute
   ) {
     // Get the level ID from params
     const levelId = this.getLevelIdFromParams();

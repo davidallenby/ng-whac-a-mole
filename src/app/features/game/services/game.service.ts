@@ -2,14 +2,13 @@ import { afterNextRender, Injectable, signal } from '@angular/core'
 import { BehaviorSubject, Observable } from 'rxjs'
 import { GAME } from '../../../shared/constants/game.constants'
 import { CommonService } from '@shared/services/common.service'
-import { GameModule } from '../game.module'
 import { Router } from '@angular/router'
 import { LeaderboardService } from '@shared/services/leaderboard.service'
 import { GameLevel, GameState } from '@shared/interfaces/game.interfaces'
 import { ActiveMoleConfig } from '../game.interfaces'
 
 @Injectable({
-  providedIn: GameModule
+  providedIn: 'root'
 })
 export class GameService {
   // Angular signal for the current game over state
